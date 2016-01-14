@@ -1,0 +1,3 @@
+rails g controller main index
+rails g scaffold user account:string name:string nickname:string password_digest:string
+rails g controller user::session new create destroy
