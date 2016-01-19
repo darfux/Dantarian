@@ -1,6 +1,7 @@
 @ng_app = angular.module(
   'Dantarian',
   [
+  	'ja.isbn',
   	'mainController',
   	'booksController',
   ]

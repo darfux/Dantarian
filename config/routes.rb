@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
 
-  resources :books
+  resources :book_infos
+  resources :books do
+      get 'sniffer', on: :collection
+  end
   # You can have the root of your site routed with "root"
   root 'main#index'
   get 'main/index'

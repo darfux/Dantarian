@@ -61,6 +61,12 @@ class BooksController < ApplicationController
     end
   end
 
+  def sniffer
+    isbn = params[:isbn]
+    result = Fux::BookSniffer.sniff(isbn)
+    render json: result
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_book
@@ -69,6 +75,6 @@ class BooksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def book_params
-      params.require(:book).permit(:isbn, :name, :cover)
+      params.require(:book).permit(book_info_attributes: [:isbn, :name, :cover])
     end
 end

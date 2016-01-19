@@ -14,6 +14,9 @@ CusPromise = (promise_)->
 			);
 			return promise_;
 		,
+		then: (callback)->
+			this.promise.then callback
+		,
 		promise: promise_
 	}
 	return obj;

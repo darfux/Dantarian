@@ -2,17 +2,17 @@
 
 <p>
   <strong>Isbn:</strong>
-  <%= @book.isbn %>
+  <%= @book.info.isbn %>
 </p>
 
 <p>
   <strong>Name:</strong>
-  <%= @book.name %>
+  <%= @book.info.name %>
 </p>
 
 <p>
   <strong>Cover:</strong>
-  <%= @book.cover %>
+  <%= @book.info.cover %>
 </p>
 
 <%= link_to 'Edit', edit_book_path(@book) %> |

@@ -1,4 +1,5 @@
 rails g controller main index
 rails g scaffold user account:string name:string nickname:string password_digest:string
 rails g controller user::session new create destroy
-rails g scaffold book isbn:string name:string cover:string
+rails g scaffold book user:references book_info:references number:integer
+rails g scaffold book_info isbn:string name:string cover:string
