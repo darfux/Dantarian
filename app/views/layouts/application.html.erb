@@ -2,11 +2,13 @@
 <html>
 <head>
   <title>Dantarian</title>
+  <script src="/bower_components/angular/angular.js"></script>
+
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<body>
+<body id="<%= params[:controller].gsub('/','-') %>" ng-controller="<%= params[:controller].capitalize %>Ctrl" action="<%= params[:action] %>">
 
 <%= yield %>
 

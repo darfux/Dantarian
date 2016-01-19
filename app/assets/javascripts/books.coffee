@@ -2,11 +2,11 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-@mainCtrl = angular.module('mainController', []);
-
+@booksCtrl = angular.module('booksController', []);
 
 # The main contoller logic
-@mainCtrl.controller("MainCtrl", ($scope, $interval, $window, NetManager)->
+@booksCtrl.controller("BooksCtrl", ($scope, $interval, $window, NetManager)->
 	# NetManager.get("http://www.jd.com").to($scope, 'jd')
+	$scope.action = current_action();
 
 )

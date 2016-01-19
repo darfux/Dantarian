@@ -1,3 +1,14 @@
 // Place all the styles related to the user::session controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+$current-module: "user-session";
+
+##{$current-module}{
+  	
+  	#login-form{
+  		text-align: center;
+  		margin-top: 240px;
+  	}
+
+
+ }
