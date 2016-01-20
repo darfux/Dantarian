@@ -1,0 +1,272 @@
+// Place all the styles related to the main controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "placeholder";
+$current-module: "main";
+
+$error-color: red;
+$correct-color: #44AA88;
+
+
+##{$current-module}{
+  	
+  	$header-width: 600px;
+  	$header-height: $header-width/2;
+  	$header-radius: #{$header-width/2} / #{$header-height/2};
+	#header{
+		transition: background-color 0.25s ease-in-out 0s;
+		position: relative;
+	    width: $header-width; 
+	    height: $header-height; 
+	    background-color: #AAA; 
+	    -moz-border-radius: $header-radius; 
+	    -webkit-border-radius: $header-radius; 
+	    border-radius: $header-radius; 
+	    margin: -$header-height/1.6 auto 0;
+	    &.inputing{
+			transition: background-color 0.25s ease-in-out 0s;
+		    background-color: #66CCFF;			
+	    }
+	    &.error{
+		    transition: background-color 0.25s ease-in-out 0s;
+		    background-color: #FF6666;
+	    }
+	    &.correct{
+			transition: background-color 0.25s ease-in-out 0s;
+		    background-color: #66FFAA;
+	    }
+	    &.returning{
+			transition: background-color 0.25s ease-in-out 0s;
+		    background-color: lighten(purple, 50%);
+	    }
+	}
+	#user-info{
+		width: 100%;
+		position: absolute;
+	    text-align: center;
+		bottom: $header-height/10;
+	}
+	#nickname{
+		font-size: 48px;
+	}
+	#account{
+		margin-top: 16px;
+		font-size: 16px;
+	}
+
+	#content{
+		margin-top: 64px;
+	}
+
+	$borrow-bar-width: 520px;
+
+	#borrow-bar{
+	}
+	#borrow_input{
+		position: relative;
+		width: 100%;
+		height: 48px;
+		margin-bottom: 6px;
+		text-align: center;
+		input{
+			@include placeholder {
+				font-family: serif;
+				color: #EEE;
+				font-size: 32px;
+				padding-top: 5px;
+			}
+			font-family: AnglicanText;
+			width: $borrow-bar-width;
+			height: 48px;
+			font-size: 40px;
+			text-align: center;
+			border: 1px solid gray;
+			border-radius: 4px;
+			letter-spacing: 0.1em;
+			&.error{
+				color:red;
+			}
+			&.correct{
+				color:green;
+			}
+			&:focus{
+				transition: border-color 0.25s ease-in-out 0s, box-shadow 0.25s ease-in-out 0s;
+			    border-color: #66CCFF;
+				box-shadow: 0 0 4px #9ecaed;
+			    @include placeholder {
+			    	color: lighten(#66CCFF, 20%);
+			    	transition: color 0.25s ease-in-out 0s;
+			    }
+				outline: none;
+			}
+		    &.error{
+			    border-color: #FF6666;
+				box-shadow: 0 0 4px #FF6666;
+			    transition: border-color 0.25s ease-in-out 0s, box-shadow 0.25s ease-in-out 0s;
+		    }
+		    &.correct{
+			    border-color: #44AA88;
+				box-shadow: 0 0 4px #44AA88;
+				transition: border-color 0.25s ease-in-out 0s, box-shadow 0.25s ease-in-out 0s;
+		    }
+		}
+	}
+	#clear-btn{
+		position: absolute;
+		left: 50%;
+		font-size: 24px;
+		margin-left: $borrow-bar-width/2 - 24px;
+		margin-top: -8px;
+		top: 50%;
+		&:hover{
+			cursor: pointer;
+		}
+	}
+	@-webkit-keyframes inputwarning{    /*透明度由0到1*/
+	    0%{
+	       border-bottom-color: transparent;
+	     }
+	    50%{
+	       border-bottom-color: red;
+	    }
+	    100%{
+	       border-bottom-color: transparent;
+	    }
+	}
+
+	@mixin abtolute-mid($width) {
+		position: absolute;
+		width: $width;
+		left: 50%;
+		margin-left: -$width/2;
+	}
+	#search-popup{
+		@include abtolute-mid(450px);
+		min-height: 24px;
+		background-color: white;
+		z-index: 1;
+		border: solid 1px #DDD;
+		border-radius: 0 0 12px 12px;
+		border-top: none;
+		&.ng-hide{
+			transition:all linear 0.25s;
+			opacity: 0;
+		}
+		.loading{
+			text-align: center;
+			font-size: 16px;
+		}
+	}
+	#book-show{
+		transition:all linear 0.5s;
+		opacity: 1;
+		&.ng-hide{
+			opacity: 0;
+		}
+	}
+	#response-msg{
+		position: absolute;
+		top: 100px;
+		&.error{
+			color: $error-color;
+		}
+		&.success{
+			color: $correct-color;
+		}
+	}
+	#book-cover{
+		img{
+			width: 200px;
+			height: 200px;
+		}
+		display: inline-block;
+	}
+	#book-info{
+		position: relative;
+		vertical-align: top;
+		width: 200px;
+		height: 200px;
+		margin-left: 20px;
+		display: inline-block;
+		p{
+			font-size: 16px;
+		}
+		button{
+			position: absolute;
+			bottom: 30px;
+			right: 30px;
+			height: 36px;
+			width: 92px;
+			border: none;
+			border-radius: 6px;
+			background-color: #6666CC;
+			color: white;
+			&:hover{
+				cursor: pointer;
+				background-color: darken(#6666CC, 5%);
+			}
+			&:active{
+				background-color: lighten(#6666CC, 5%);
+			}
+		}
+	}
+
+
+	#borrowed-list{
+		display: block;
+		position: relative;
+		width: 720px;
+		text-align: center;
+		margin: 64px auto 0;
+		.list-cell{
+			border-bottom: solid 1px #EEE;
+			margin-top: 8px;
+			font-size: 16px; 
+			span{	
+				text-align: left;
+				margin-top: 32px;
+				margin-left: 32px;
+			}
+			opacity: 1;
+			&.fade{
+				transition: opacity ease-in 1s;
+				opacity: 0;
+			}
+		}
+		img{
+			margin-top: 0px;
+			width: 72px;
+			height: 72px;
+		}
+		.name, .isbn, .retbook_btn{
+			vertical-align: top;
+			display: inline-block;
+		}
+		.name{
+			width: 320px;
+		}
+		.isbn{		
+			width: 120px;
+		}
+		.retbook_btn{
+			width: 72px;
+			button{
+				height: 32px;
+				width: 32px;
+				margin-top: -16px;
+				border: none;
+				border-radius: 32px;
+				background-color: purple;
+				color: white;
+				&:hover{
+					cursor: pointer;
+				}
+				&:active, &:focus{
+					outline: none;
+				}
+			}
+		}
+	}
+
+}
+

@@ -1,0 +1,46 @@
+<div id="header" ng-class="{inputing: input.focus, correct: borrow_form.isbn.$valid, error: !input_is_correct(), returning: ret_book}">
+	<div id="user-info">
+		<div id="nickname"><%= @current_user.nickname %></div>
+		<div id="account"><%= @current_user.account %></div>
+	</div>
+</div>
+
+<div id="content">
+	<div id="borrow-bar">
+		<form ng-submit="handle_borrow($event)" name="borrow_form" novalidate>
+			<div id="borrow_input">
+				<%= text_field_tag :isbn, nil, {id: 'isbn-input', "ng-model": "book.isbn", "is-isbn": '', required: '', maxlength: 17, "ng-class": "{inputing: input.focus, correct: borrow_form.isbn.$valid, error: !input_is_correct()}", autocomplete: "off", placeholder: "借书请输入ISBN号", "ng-focus": "input.focus=true;", "ng-blur": "input.focus=false"}%>
+				<span id="clear-btn" ng-show="input_has_value()" ng-click="handle_clear()">x</span>
+			</div>
+			<div id="search-popup" ng-show="input_is_correct(false)">
+				<div ng-show="book.searching" class="loading">Loading...</div>
+				<div ng-show="book.show" id="book-show">
+				<div id="book-cover">
+					<%= image_tag("", {"ng-src": "//{{book.cover}}"}) %>
+				</div>
+				<div id="book-info">
+					<p>{{book.name}}</p>
+					<span id="response-msg" ng-class="{ok: 'success', fail: 'error'}[book.borrow_state]">{{response_msg}}</span>
+					<button ng-show="borrow_btn" type="submit" class="button">借阅</button>
+					<button ng-show="ok_btn" class="button" ng-click="ok_btn=false;handle_clear()">知道了</button>
+				</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div id="borrowed-list"ng-init="borrowed_books=<%= @current_user.borrowed_books.to_json %>">
+	<div ng-repeat="book in borrowed_books" class="list-cell" ng-class="{fade: ret_book==book.id}">
+		<img ng-src="//{{book.cover}}">
+		<span class="name">{{book.name}}</span>
+		<span class="isbn">{{book.isbn}}</span>
+		<span class="retbook_btn" title="还书请按住我"><button ng-mousedown="handle_ret(book.id)" ng-mouseup="handle_cancel_ret()">还</button></span>
+	</div>
+	</div>
+</div>
+
+
+
+
+
+

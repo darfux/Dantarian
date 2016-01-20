@@ -1,0 +1,24 @@
+{
+  "name": "Dantarian",
+  "authors": [
+    "darfux <darfux@163.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular.validators": "~4.4.2",
+    "angular-animate": "~1.4.8"
+  }
+}

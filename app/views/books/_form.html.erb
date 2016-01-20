@@ -1,0 +1,37 @@
+<%= form_for(@book, html: {"ng-submit": "submit($event)", name: "book_form", novalidate:''}) do |f| %>
+  <% if @book.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@book.errors.count, "error") %> prohibited this book from being saved:</h2>
+
+      <ul>
+      <% @book.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <%= f.fields_for :book_info do |f_f| %>
+    <div class="field">
+      <%= f_f.label :isbn %><br>
+      <%= f_f.text_field :isbn, {"ng-model": "isbn", isbn13: '', required: ''} %>{{isbn}}
+      <p><small class="validation-error" ng-hide="book_form.isbn13.$valid">ISBN-13 is invalid. Try 978-1-4493-4485-6</small></p>
+    </div>
+    <div class="field">
+      <%= f_f.label :name %><br>
+      <%= f_f.text_field :name, {"ng-model": "name"} %>
+    </div>
+    <div class="field">
+      <%= f_f.hidden_field :cover, {value: "{{cover}}"} %><br>
+    </div>
+  <% end %>
+
+
+  <div>
+    <%= image_tag("//{{cover}}") %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,12 @@
+<div id="title"><div class="main" ng-class="{stp1: account, stp2: password}">Dantarian</div> <div class="sub" ng-class="{stp1: account, stp2: password}">shoka</div></div>
+<div id="login-form">
+<%= form_for @session do |f|%>
+  <div class="field">
+    <%= f.text_field :account, {"ng-model": "account"} %>
+  </div>
+  <div class="field">
+    <%= f.password_field :password, {"ng-model": "password"} %>
+  </div>
+  <%= f.button nil, :id => "submit", :name => "submit", :class => "form_submit" %>
+<% end -%>
+</div>
