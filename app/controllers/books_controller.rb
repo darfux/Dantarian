@@ -72,19 +72,19 @@ class BooksController < ApplicationController
 
     if @info.nil?
       @book = Book.new(book_params)
-      @book.borrower = current_user
-      @book = nil unless @book.save
     else
       @book = @info.books.find_by(user: nil)
     end
 
     if @book
-      render json: {status: 'ok', borrowed_books: @current_user.borrowed_books}, status: :ok
-    else
-      @borrowed_users = @info.borrowed_users
-      render json: {status: 'fail', errno: 'borrowed', users: @borrowed_users}, status: :ok
+      @book.borrower = current_user
+      if @book.save
+        render json: {status: 'ok', borrowed_books: @current_user.borrowed_books}, status: :ok
+        return
+      end
     end
-
+    @borrowed_users = @info.borrowed_users
+    render json: {status: 'fail', errno: 'borrowed', users: @borrowed_users}, status: :ok
   end
 
   private

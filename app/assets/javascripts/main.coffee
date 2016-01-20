@@ -15,11 +15,14 @@
 			NetManager.get('/books/sniffer', {isbn: isbn}).then (data)->
 				$scope.book.cover = data.cover
 				$scope.book.name = data.name
+		else
+			$scope.book = {}
 
 	)
 
 	scattrs = {
-		book: {}
+		book: {isbn: ''}
+		isbn_pattern: /^\d+$/
 		handle_borrow: (event)->
 			if !$scope.borrow_form.$valid
 				event.preventDefault()
@@ -27,6 +30,7 @@
 				console.log $scope.book
 				NetManager.post('/books/borrow_by_isbn', {book: {book_info_attributes: $scope.book}}).then (data)->
 					if data.status=='ok'
+						$scope.book = {}
 						$scope.borrowed_books = data.borrowed_books
 					if data.status=='fail'
 						if data.errno=='borrowed'

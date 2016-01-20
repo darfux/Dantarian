@@ -1,4 +1,4 @@
-<div id="header">
+<div id="header" ng-class="{inputing: input.focus, correct: borrow_form.isbn.$valid}">
 	<div id="user-info">
 		<div id="nickname"><%= @current_user.nickname %></div>
 		<div id="account"><%= @current_user.account %></div>
@@ -6,24 +6,31 @@
 </div>
 
 <div id="content">
-	<form ng-submit="handle_borrow($event)" name="borrow_form" novalidate>
-		<div id="borrow_input">
-			<%= text_field_tag :isbn, nil, {"ng-model": "book.isbn", isbn13: '', required: ''}%>
-		</div>
-
-	<p><small class="validation-error" ng-hide="borrow_form.isbn.$valid">ISBN-13 is invalid. Try 978-1-4493-4485-6</small></p>{{book.name}}
-	  <div>
-	    <%= image_tag("//{{book.cover}}") %>
-	  </div>
-	<button type="submit" class="button" ng-class="{true: '', false: 'alert'}[borrow_form.$valid]">Submit</button>{{error_msg}}
-	</form>{{book}}
-
-	<div ng-init="borrowed_books=<%= @current_user.borrowed_books.to_json %>">
-	<ul>
-	<div ng-repeat="book in borrowed_books">
-	{{book.name}} | {{book.isbn}} | <img src="//{{book.cover}}">
+	<div id="borrow-bar">
+		<form ng-submit="handle_borrow($event)" name="borrow_form" novalidate>
+			<div id="borrow_input">
+				<%= text_field_tag :isbn, nil, {"ng-model": "book.isbn", isbn13: '', required: '', maxlength: 17, "ng-class": "{true: 'correct', false: 'error'}[!borrow_form.isbn.$viewValue || borrow_form.isbn.$valid]", autocomplete: "off", placeholder: "借书请输入ISBN号", "ng-focus": "input.focus=true;", "ng-blur": "input.focus=false"}%>
+			</div>
+			<div id="book-show" ng-show="borrow_form.isbn.$valid">
+				<div id="book-cover">
+					<%= image_tag("//{{book.cover}}") %>
+				</div>
+				<div id="book-info">
+					<p>{{book.name}}</p>
+					{{error_msg}}
+					<!-- <p>{{book.isbn}}</p> -->
+					<button type="submit" class="button" ng-class="{true: '', false: 'alert'}[borrow_form.$valid]">借阅</button>
+				</div>
+			</div>
+		</form>
 	</div>
-	</ul>
+
+	<div id="borrowed-list"ng-init="borrowed_books=<%= @current_user.borrowed_books.to_json %>">
+	<div ng-repeat="book in borrowed_books" class="list-cell">
+		<img src="//{{book.cover}}">
+		<span class="name">{{book.name}}</span>
+		<span class="isbn">{{book.isbn}}</span>
+	</div>
 	</div>
 </div>
 
