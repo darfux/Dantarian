@@ -1,4 +1,4 @@
-<div id="header" ng-class="{inputing: input.focus, correct: borrow_form.isbn.$valid, error: !input_is_correct()}">
+<div id="header" ng-class="{inputing: input.focus, correct: borrow_form.isbn.$valid, error: !input_is_correct(), returning: ret_book}">
 	<div id="user-info">
 		<div id="nickname"><%= @current_user.nickname %></div>
 		<div id="account"><%= @current_user.account %></div>

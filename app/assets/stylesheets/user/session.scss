@@ -1,13 +1,77 @@
 // Place all the styles related to the user::session controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+@import "placeholder";
 $current-module: "user-session";
 
 ##{$current-module}{
   	
+  	#title{
+  		margin: 120px auto 0px;
+  		text-align: center;
+  		font-family: AnglicanText;
+  		.main{
+  			height: 64px;
+	  		font-size: 96px;
+	  		color: gray;
+	  		transition: color 1s linear;
+	  		&.stp1, &.stp2{
+	  			transition: color 1s linear;
+	  			color: darken(purple, 10%);
+	  		}
+	  		&.stp1.stp2{
+	  			transition: color 1s linear;
+	  			color: purple;
+	  		}
+  		}
+  		.sub{
+  			color: #666;
+  			font-size: 24px;
+	  		transition: color 1s linear;
+  			opacity: 0.1;
+	  		&.stp1, &.stp2{
+	  			transition: color 1s linear;
+	  			color: lighten(purple, 40%);
+	  			opacity: 0.1;
+	  		}
+	  		&.stp1.stp2{
+	  			transition: color 1s linear;
+	  			color: lighten(purple, 30%);
+	  			opacity: 0.1;
+	  		}
+  		}
+  	}
   	#login-form{
   		text-align: center;
-  		margin-top: 240px;
+  		padding: 40px 0;
+  		margin: 0 auto;
+  		input{
+  			&:-webkit-autofill {
+			    -webkit-box-shadow: 0 0 0px 1000px white inset;
+			}
+	  		font-family: AnglicanText;
+  			font-size: 3em;
+  			text-align: center;
+  			border:none;
+  			outline: none;
+  			border-bottom: dashed 1px gray;
+  		}
+  		button{
+	  		// font-family: AnglicanText;
+  			transition: color 0.5s linear;
+  			color: rgba(233, 233, 233, 0.6);
+	  		&:hover{
+	  			cursor: pointer;
+	  			transition: color 0.5s linear;
+	  			color: gray;
+	  		}
+  			background-color: white;
+  			border: none;
+  			font-size: 24px;
+  		}
+
+  		// border: solid 1px gray;
+  		// text-align: center;
   	}
 
 

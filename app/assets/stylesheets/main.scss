@@ -1,26 +1,8 @@
 // Place all the styles related to the main controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-@font-face
-{
-font-family: DeutscheZierschrift;
-src: url('/fonts/DeutscheZierschrift.ttf')
-}
-@font-face
-{
-font-family: AnglicanText;
-src: url('/fonts/AnglicanText.ttf')
-}
-
+@import "placeholder";
 $current-module: "main";
-
-// http://stackoverflow.com/questions/17181849/placeholder-mixin-scss-css#20320475
-@mixin placeholder {
-  &::-webkit-input-placeholder {@content}
-  &:-moz-placeholder           {@content}
-  &::-moz-placeholder          {@content}
-  &:-ms-input-placeholder      {@content}  
-}
 
 $error-color: red;
 $correct-color: #44AA88;
@@ -52,6 +34,10 @@ $correct-color: #44AA88;
 	    &.correct{
 			transition: background-color 0.25s ease-in-out 0s;
 		    background-color: #66FFAA;
+	    }
+	    &.returning{
+			transition: background-color 0.25s ease-in-out 0s;
+		    background-color: lighten(purple, 50%);
 	    }
 	}
 	#user-info{
@@ -189,7 +175,10 @@ $correct-color: #44AA88;
 		}
 	}
 	#book-cover{
-		width: 200px;
+		img{
+			width: 200px;
+			height: 200px;
+		}
 		display: inline-block;
 	}
 	#book-info{

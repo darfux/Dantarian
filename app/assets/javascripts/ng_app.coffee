@@ -3,6 +3,7 @@
   [
   	'ngAnimate',
   	'angular.validators',
+  	'sessionController',
   	'mainController',
   	'booksController',
   ]
