@@ -18,6 +18,7 @@
 				$scope.book.searching = false
 				$scope.book.cover = data.cover
 				$scope.book.name = data.name
+				$scope.book.source = data.src
 				$scope.book.show = true
 		else
 			$scope.book.show = false
