@@ -1,3 +1,59 @@
 // Place all the styles related to the main controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+$current-module: "main";
+
+##{$current-module}{
+  	
+  	$header-width: 600px;
+  	$header-height: $header-width/2;
+  	$header-radius: #{$header-width/2} / #{$header-height/2};
+	#header{
+		position: relative;
+	    width: $header-width; 
+	    height: $header-height; 
+	    background: #AAA; 
+	    -moz-border-radius: $header-radius; 
+	    -webkit-border-radius: $header-radius; 
+	    border-radius: $header-radius; 
+	    margin: -$header-height/1.6 auto 0;
+	}
+	#user-info{
+		width: 100%;
+		position: absolute;
+	    text-align: center;
+		bottom: $header-height/10;
+	}
+	#nickname{
+		font-size: 48px;
+	}
+	#account{
+		margin-top: 16px;
+		font-size: 16px;
+	}
+
+	#content{
+		margin-top: 64px;
+	}
+	#borrow_input{
+		width: 100%;
+		height: 32px;
+		text-align: center;
+		input{
+			width: 12em;
+			height: 24px;
+			font-size: 24px;
+			text-align: center;
+			border: 1px solid gray;
+			border-radius: 8px;
+			&:focus{
+				border-color: #66CCFF;
+				outline: none;
+			}
+		}
+	}
+
+
+}
+

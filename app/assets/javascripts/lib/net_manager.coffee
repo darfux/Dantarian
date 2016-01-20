@@ -38,7 +38,7 @@ ng_app.factory("NetManager", ($q, $http)->
 		,
 		post: (url, data_, flag)->
 			deferred = $q.defer();
-			base = !flag ? SERVER_ADDRESS : '';
+			base = '';
 			$http.post(base + url, data_).
 			success((data)->
 				deferred.resolve(data);

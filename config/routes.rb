@@ -2,7 +2,10 @@ Rails.application.routes.draw do
 
   resources :book_infos
   resources :books do
-      get 'sniffer', on: :collection
+    collection do
+      get 'sniffer'
+      post 'borrow_by_isbn'
+    end
   end
   # You can have the root of your site routed with "root"
   root 'main#index'

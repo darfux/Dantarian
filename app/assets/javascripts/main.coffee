@@ -7,6 +7,32 @@
 
 # The main contoller logic
 @mainCtrl.controller("MainCtrl", ($scope, $interval, $window, NetManager)->
-	# NetManager.get("http://www.jd.com").to($scope, 'jd')
 
+	$scope.$watch('book.isbn', ->
+		$scope.error_msg = ""
+		isbn = $scope.book.isbn
+		if isbn && $scope.borrow_form.$valid
+			NetManager.get('/books/sniffer', {isbn: isbn}).then (data)->
+				$scope.book.cover = data.cover
+				$scope.book.name = data.name
+
+	)
+
+	scattrs = {
+		book: {}
+		handle_borrow: (event)->
+			if !$scope.borrow_form.$valid
+				event.preventDefault()
+			else
+				console.log $scope.book
+				NetManager.post('/books/borrow_by_isbn', {book: {book_info_attributes: $scope.book}}).then (data)->
+					if data.status=='ok'
+						$scope.borrowed_books = data.borrowed_books
+					if data.status=='fail'
+						if data.errno=='borrowed'
+							u =  data.users[0]
+							$scope.error_msg = "该书已被#{u.nickname}(#{u.account})借阅！"
+	}
+
+	angular.extend($scope, scattrs)
 )
