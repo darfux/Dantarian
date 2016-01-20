@@ -18,6 +18,6 @@
     "tests"
   ],
   "dependencies": {
-    "angular-isbn": "~0.1.0"
+    "angular.validators": "~4.4.2"
   }
 }

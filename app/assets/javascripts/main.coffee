@@ -23,6 +23,14 @@
 	scattrs = {
 		book: {isbn: ''}
 		isbn_pattern: /^\d+$/
+		input_has_value: ->
+			$scope.borrow_form.isbn.$viewValue
+		input_is_correct: ()->
+			!@input_has_value() || $scope.borrow_form.isbn.$valid
+		handle_clear: ()->
+			$scope.book = {}
+			$('#isbn-input').val('')
+			$scope.borrow_form.isbn.$viewValue = ""
 		handle_borrow: (event)->
 			if !$scope.borrow_form.$valid
 				event.preventDefault()

@@ -1,7 +1,7 @@
 @ng_app = angular.module(
   'Dantarian',
   [
-  	'ja.isbn',
+  	'angular.validators',
   	'mainController',
   	'booksController',
   ]
