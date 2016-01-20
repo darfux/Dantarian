@@ -31,6 +31,7 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'thin'
 
+gem 'database_cleaner'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

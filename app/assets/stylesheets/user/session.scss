@@ -46,11 +46,11 @@ $current-module: "user-session";
   		padding: 40px 0;
   		margin: 0 auto;
   		input{
-  			&:-webkit-autofill {
+  			&:-webkit-autofill{
 			    -webkit-box-shadow: 0 0 0px 1000px white inset;
-			}
-	  		font-family: AnglicanText;
-  			font-size: 3em;
+			  }
+	  		// font-family: AnglicanText;
+  			font-size: 2em;
   			text-align: center;
   			border:none;
   			outline: none;
