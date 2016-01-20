@@ -6,7 +6,7 @@
 
 
 # The main contoller logic
-@mainCtrl.controller("MainCtrl", ($scope, $interval, $window, NetManager)->
+@mainCtrl.controller("MainCtrl", ['$scope', '$interval', '$window', 'NetManager', ($scope, $interval, $window, NetManager)->
 
 	$scope.$watch('book.isbn', ->
 		$scope.error_msg = ""
@@ -78,4 +78,4 @@
 	}
 
 	angular.extend($scope, scattrs)
-)
+])

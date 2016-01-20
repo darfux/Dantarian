@@ -4,7 +4,7 @@
 @sessionCtrl = angular.module('sessionController', []);
 
 # The main contoller logic
-@sessionCtrl.controller("UserSessionCtrl", ($scope, $interval, $window, NetManager)->
+@sessionCtrl.controller("UserSessionCtrl", ['$scope', '$interval', '$window', 'NetManager', ($scope, $interval, $window, NetManager)->
 	# NetManager.get("http://www.jd.com").to($scope, 'jd')
 
 	scope_attrs = {
@@ -14,4 +14,4 @@
 
 
 
-)
+])

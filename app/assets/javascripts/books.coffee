@@ -5,7 +5,7 @@
 @booksCtrl = angular.module('booksController', []);
 
 # The main contoller logic
-@booksCtrl.controller("BooksCtrl", ($scope, $interval, $window, NetManager)->
+@booksCtrl.controller("BooksCtrl", ['$scope', '$interval', '$window', 'NetManager', ($scope, $interval, $window, NetManager)->
 	# NetManager.get("http://www.jd.com").to($scope, 'jd')
 
 
@@ -31,4 +31,4 @@
 
 
 
-)
+])
