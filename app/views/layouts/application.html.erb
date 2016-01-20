@@ -9,7 +9,7 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<body id="<%= params[:controller].gsub('/','-') %>" ng-controller="<%= params[:controller].capitalize %>Ctrl" action="<%= params[:action] %>">
+<body id="<%= params[:controller].gsub('/','-') %>" ng-controller="<%= params[:controller].gsub('/','_').camelize %>Ctrl" action="<%= params[:action] %>">
 
 <%= yield %>
 
