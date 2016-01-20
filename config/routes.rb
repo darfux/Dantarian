@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     collection do
       get 'sniffer'
       post 'borrow_by_isbn'
+      post 'ret'
     end
   end
   # You can have the root of your site routed with "root"

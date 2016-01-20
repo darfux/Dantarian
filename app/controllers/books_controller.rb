@@ -69,7 +69,6 @@ class BooksController < ApplicationController
   end
 
   def borrow_by_isbn
-
     if @info.nil?
       @book = Book.new(book_params)
     else
@@ -85,6 +84,13 @@ class BooksController < ApplicationController
     end
     @borrowed_users = @info.borrowed_users
     render json: {status: 'fail', errno: 'borrowed', users: @borrowed_users}, status: :ok
+  end
+
+  def ret
+    @book = Book.find(params['book']['id'])
+    @book.user = nil
+    @book.save
+    render json: {status: 'ok', borrowed_books: @current_user.borrowed_books}, status: :ok
   end
 
   private

@@ -22,6 +22,9 @@ $current-module: "main";
   &:-ms-input-placeholder      {@content}  
 }
 
+$error-color: red;
+$correct-color: #44AA88;
+
 
 ##{$current-module}{
   	
@@ -175,6 +178,16 @@ $current-module: "main";
 			opacity: 0;
 		}
 	}
+	#response-msg{
+		position: absolute;
+		top: 100px;
+		&.error{
+			color: $error-color;
+		}
+		&.success{
+			color: $correct-color;
+		}
+	}
 	#book-cover{
 		width: 200px;
 		display: inline-block;
@@ -213,7 +226,7 @@ $current-module: "main";
 	#borrowed-list{
 		display: block;
 		position: relative;
-		width: 640px;
+		width: 720px;
 		text-align: center;
 		margin: 64px auto 0;
 		.list-cell{
@@ -225,21 +238,44 @@ $current-module: "main";
 				margin-top: 32px;
 				margin-left: 32px;
 			}
+			opacity: 1;
+			&.fade{
+				transition: opacity ease-in 1s;
+				opacity: 0;
+			}
 		}
 		img{
 			margin-top: 0px;
 			width: 72px;
 			height: 72px;
 		}
-		.name{
+		.name, .isbn, .retbook_btn{
 			vertical-align: top;
 			display: inline-block;
+		}
+		.name{
 			width: 320px;
 		}
-		.isbn{
-			vertical-align: top;
-			display: inline-block;
+		.isbn{		
 			width: 120px;
+		}
+		.retbook_btn{
+			width: 72px;
+			button{
+				height: 32px;
+				width: 32px;
+				margin-top: -16px;
+				border: none;
+				border-radius: 32px;
+				background-color: purple;
+				color: white;
+				&:hover{
+					cursor: pointer;
+				}
+				&:active, &:focus{
+					outline: none;
+				}
+			}
 		}
 	}
 

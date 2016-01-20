@@ -20,8 +20,9 @@
 				</div>
 				<div id="book-info">
 					<p>{{book.name}}</p>
-					{{error_msg}}
-					<button type="submit" class="button" ng-class="{true: '', false: 'alert'}[borrow_form.$valid]">借阅</button>
+					<span id="response-msg" ng-class="{ok: 'success', fail: 'error'}[book.borrow_state]">{{response_msg}}</span>
+					<button ng-show="borrow_btn" type="submit" class="button">借阅</button>
+					<button ng-show="ok_btn" class="button" ng-click="ok_btn=false;handle_clear()">知道了</button>
 				</div>
 				</div>
 			</div>
@@ -29,10 +30,11 @@
 	</div>
 
 	<div id="borrowed-list"ng-init="borrowed_books=<%= @current_user.borrowed_books.to_json %>">
-	<div ng-repeat="book in borrowed_books" class="list-cell">
+	<div ng-repeat="book in borrowed_books" class="list-cell" ng-class="{fade: ret_book==book.id}">
 		<img ng-src="//{{book.cover}}">
 		<span class="name">{{book.name}}</span>
 		<span class="isbn">{{book.isbn}}</span>
+		<span class="retbook_btn" title="还书请按住我"><button ng-mousedown="handle_ret(book.id)" ng-mouseup="handle_cancel_ret()">还</button></span>
 	</div>
 	</div>
 </div>
