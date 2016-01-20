@@ -12,12 +12,14 @@
 		$scope.error_msg = ""
 		isbn = $scope.book.isbn
 		if isbn && $scope.borrow_form.$valid
+			$scope.book.searching = true
 			NetManager.get('/books/sniffer', {isbn: isbn}).then (data)->
+				$scope.book.searching = false
 				$scope.book.cover = data.cover
 				$scope.book.name = data.name
+				$scope.book.show = true
 		else
-			$scope.book = {}
-
+			$scope.book.show = false
 	)
 
 	scattrs = {
@@ -25,10 +27,11 @@
 		isbn_pattern: /^\d+$/
 		input_has_value: ->
 			$scope.borrow_form.isbn.$viewValue
-		input_is_correct: ()->
-			!@input_has_value() || $scope.borrow_form.isbn.$valid
+		input_is_correct: (allowempty)->
+			allowempty = true if allowempty == undefined
+			ret = (allowempty && !@input_has_value()) || $scope.borrow_form.isbn.$valid
 		handle_clear: ()->
-			$scope.book = {}
+			$scope.book.isbn = null
 			$('#isbn-input').val('')
 			$scope.borrow_form.isbn.$viewValue = ""
 		handle_borrow: (event)->

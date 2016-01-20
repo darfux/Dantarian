@@ -1,6 +1,7 @@
 @ng_app = angular.module(
   'Dantarian',
   [
+  	'ngAnimate',
   	'angular.validators',
   	'mainController',
   	'booksController',

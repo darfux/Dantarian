@@ -12,15 +12,17 @@
 				<%= text_field_tag :isbn, nil, {id: 'isbn-input', "ng-model": "book.isbn", "is-isbn": '', required: '', maxlength: 17, "ng-class": "{inputing: input.focus, correct: borrow_form.isbn.$valid, error: !input_is_correct()}", autocomplete: "off", placeholder: "借书请输入ISBN号", "ng-focus": "input.focus=true;", "ng-blur": "input.focus=false"}%>
 				<span id="clear-btn" ng-show="input_has_value()" ng-click="handle_clear()">x</span>
 			</div>
-			<div id="book-show" ng-show="borrow_form.isbn.$valid">
+			<div id="search-popup" ng-show="input_is_correct(false)">
+				<div ng-show="book.searching" class="loading">Loading...</div>
+				<div ng-show="book.show" id="book-show">
 				<div id="book-cover">
-					<%= image_tag("//{{book.cover}}") %>
+					<%= image_tag("", {"ng-src": "//{{book.cover}}"}) %>
 				</div>
 				<div id="book-info">
 					<p>{{book.name}}</p>
 					{{error_msg}}
-					<!-- <p>{{book.isbn}}</p> -->
 					<button type="submit" class="button" ng-class="{true: '', false: 'alert'}[borrow_form.$valid]">借阅</button>
+				</div>
 				</div>
 			</div>
 		</form>
@@ -28,7 +30,7 @@
 
 	<div id="borrowed-list"ng-init="borrowed_books=<%= @current_user.borrowed_books.to_json %>">
 	<div ng-repeat="book in borrowed_books" class="list-cell">
-		<img src="//{{book.cover}}">
+		<img ng-src="//{{book.cover}}">
 		<span class="name">{{book.name}}</span>
 		<span class="isbn">{{book.isbn}}</span>
 	</div>
