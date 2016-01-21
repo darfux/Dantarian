@@ -14,7 +14,7 @@
 		if isbn && $scope.borrow_form.$valid
 			$scope.book.searching = true
 			NetManager.get('/books/sniffer', {isbn: isbn}).then (data)->
-				$scope.borrow_btn = true
+				$scope.borrow_btn = true if data.src != 'none'
 				$scope.book.searching = false
 				$scope.book.cover = data.cover
 				$scope.book.name = data.name
@@ -22,6 +22,7 @@
 				$scope.book.show = true
 		else
 			$scope.book.show = false
+			$scope.borrow_btn= false
 	)
 
 	scattrs = {
@@ -39,6 +40,8 @@
 			$('#isbn-input').val('')
 			$scope.borrow_form.isbn.$viewValue = ""
 			$scope.response_msg = ""
+			$scope.borrow_btn = false
+
 
 		handle_borrow: (event)->
 			if !$scope.borrow_form.$valid

@@ -4,21 +4,33 @@ require 'json'
 
 module Fux
   class BookSniffer
+    FAILED_LIMIT = 4;
+    NONE = 'none'
     def self.sniff(isbn)
       isbn.gsub!(/[- ]/,'')
 
-      coin = rand(11)
-
-      case coin
-      when 0..3
-        sniff_from_m_dangdang(isbn)
-      when 4..7
-        sniff_from_m_jd(isbn)
-      when 8..9
-        sniff_from_dangdang(isbn)
-      when 10
-        sniff_from_jd(isbn)
-      end   
+      failed_count = 0
+      result = {name: '404 book not found 0w0', cover: '', src: NONE}
+      begin
+        coin = rand(11)
+        result = (
+          case coin
+          when 0..3
+            sniff_from_m_dangdang(isbn)
+          when 4..7
+            sniff_from_m_jd(isbn)
+          when 8..9
+            sniff_from_dangdang(isbn)
+          when 10
+            sniff_from_jd(isbn)
+          end   
+        )
+      rescue
+        failed_count += 1
+        retry if failed_count<FAILED_LIMIT
+      ensure
+      end
+      result
     end
 
     def self.update_encoding(str, src_encoding)
