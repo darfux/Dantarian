@@ -258,8 +258,17 @@ $correct-color: #44AA88;
 				border-radius: 32px;
 				background-color: purple;
 				color: white;
+				&:after{
+					content: '还';
+				}
 				&:hover{
 					cursor: pointer;
+					width: 64px;
+					background-color: lighten(purple, 10%);
+					transition:background-color linear 0.5s;
+					&:after{
+						content: '按住还';
+					}
 				}
 				&:active, &:focus{
 					outline: none;
