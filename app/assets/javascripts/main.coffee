@@ -6,7 +6,8 @@
 
 
 # The main contoller logic
-@mainCtrl.controller("MainCtrl", ['$scope', '$interval', '$window', 'NetManager', ($scope, $interval, $window, NetManager)->
+@mainCtrl.controller("MainCtrl", ['$scope', '$interval', '$window', 'NetManager', 'Helper', 
+($scope, $interval, $window, NetManager, Helper)->
 
 	$scope.$watch('book.isbn', ->
 		$scope.error_msg = ""
@@ -18,6 +19,7 @@
 				$scope.book.searching = false
 				$scope.book.cover = data.cover
 				$scope.book.name = data.name
+				$scope.book.author = data.author
 				$scope.book.source = data.src
 				$scope.book.show = true
 		else
@@ -34,6 +36,8 @@
 			allowempty = true if allowempty == undefined
 			ret = (allowempty && !@input_has_value()) || $scope.borrow_form.isbn.$valid
 		
+		author_brief: (book)->
+			Helper.brief(book.author, 12)
 
 		handle_clear: ()->
 			$scope.book.isbn = null

@@ -176,8 +176,9 @@ $correct-color: #44AA88;
 	}
 	#book-cover{
 		img{
-			width: 200px;
-			height: 200px;
+			padding: 20px 30px 30px;
+			width: 107px;
+			height: 138px;
 		}
 		display: inline-block;
 	}
@@ -235,18 +236,21 @@ $correct-color: #44AA88;
 		}
 		img{
 			margin-top: 0px;
-			width: 72px;
+			width: 64px;
 			height: 72px;
 		}
-		.name, .isbn, .retbook_btn{
+		.name, .author, .isbn, .retbook_btn{
 			vertical-align: top;
 			display: inline-block;
 		}
 		.name{
-			width: 320px;
+			width: 180px;
+		}
+		.author{
+			width: 120px;
 		}
 		.isbn{		
-			width: 120px;
+			width: 100px;
 		}
 		.retbook_btn{
 			width: 72px;

@@ -68,7 +68,7 @@ class BooksController < ApplicationController
     if bi.nil?
       result = Fux::BookSniffer.sniff(isbn)
     else
-      result = {name: bi.name, cover: bi.cover, src: bi.source}
+      result = {name: bi.name, cover: bi.cover, author: bi.author, src: bi.source}
     end
     render json: result
   end
@@ -110,7 +110,7 @@ class BooksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def book_params
-      params.require(:book).permit(book_info_attributes: [:isbn, :name, :cover, :source]).tap{ |book|
+      params.require(:book).permit(book_info_attributes: [:isbn, :name, :cover, :author, :source]).tap{ |book|
         book["book_info_attributes"]["isbn"].gsub!(/[- ]/, '')
       }
     end
