@@ -64,7 +64,8 @@
 							$scope.ok_btn = true
 							u =  data.users[0]
 							$scope.response_msg = "该书已被#{u.nickname}(#{u.account})借阅！"
-		handle_ret: (book_id)->
+		handle_ret: (event, book_id)->
+			return if event.button != 0
 			$scope.ret_book = book_id
 			$scope.ret_timer = $interval(
 							->

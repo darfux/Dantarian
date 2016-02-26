@@ -34,7 +34,7 @@
 		<img ng-src="//{{book.cover}}">
 		<span class="name">{{book.name}}</span>
 		<span class="isbn">{{book.isbn}}</span>
-		<span class="retbook_btn" title="还书请按住我"><button ng-mousedown="handle_ret(book.id)" ng-mouseup="handle_cancel_ret()"></button></span>
+		<span class="retbook_btn" title="还书请按住我"><button ng-mousedown="handle_ret($event, book.id)" ng-mouseup="handle_cancel_ret()"></button></span>
 	</div>
 	</div>
 </div>
