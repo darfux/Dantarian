@@ -1,15 +1,15 @@
-<div id="header" ng-class="{inputing: input.focus, correct: borrow_form.isbn.$valid, error: !input_is_correct(), returning: ret_book}">
+<!-- aio means All In One -->
+<div id="header" ng-class="{inputing: input.focus, correct: aio_form.isbn.$valid, error: !input_is_correct(), returning: ret_book}">
 	<div id="user-info">
 		<div id="nickname"><%= @current_user.nickname %></div>
 		<div id="account"><%= @current_user.account %></div>
 	</div>
 </div>
-
 <div id="content">
 	<div id="borrow-bar">
-		<form ng-submit="handle_borrow($event)" name="borrow_form" novalidate>
+		<form ng-submit="handle_borrow($event)" name="aio_form" novalidate>
 			<div id="borrow_input">
-				<%= text_field_tag :isbn, nil, {id: 'isbn-input', "ng-model": "book.isbn", "is-isbn": '', required: '', maxlength: 17, "ng-class": "{inputing: input.focus, correct: borrow_form.isbn.$valid, error: !input_is_correct()}", autocomplete: "off", placeholder: "借书请输入ISBN号", "ng-focus": "input.focus=true;", "ng-blur": "input.focus=false"}%>
+				<%= text_field_tag :input, nil, {id: 'aio-input', "ng-model": "aio.input", 'all-in-one': '', required: '',spellcheck: false, "ng-class": "{inputing: input.focus, correct: input_is_correct(false), error: !input_is_correct()}", autocomplete: "off", "ng-focus": "input.focus=true;", "ng-blur": "input.focus=false"}%>
 				<span id="clear-btn" ng-show="input_has_value()" ng-click="handle_clear()">x</span>
 			</div>
 			<div id="search-popup" ng-show="input_is_correct(false)">

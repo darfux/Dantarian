@@ -3,7 +3,11 @@
 font-family: AnglicanText;
 src: url('/fonts/AnglicanText.ttf')
 }
-
+@font-face
+{
+font-family: AnglicanTextMini;
+src: url('/fonts/AnglicanText_mini.ttf')
+}
 
 body {
   background-color: #fff;

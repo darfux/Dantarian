@@ -3,7 +3,7 @@ require 'nokogiri'
 require 'json'
 
 module Fux
-  class BookSniffer
+  class BookSniffer < Sniffer
     FAILED_LIMIT = 4;
     NONE = 'none'
     def self.sniff(isbn)
@@ -21,10 +21,7 @@ module Fux
       result
     end
 
-    def self.update_encoding(str, src_encoding)
-      str.force_encoding(src_encoding)
-      str.encode!('utf-8', src_encoding, {:invalid => :replace, :undef => :replace})
-    end
+
 
     def self.sniff_from_douban(isbn)
       uri = URI('https://api.douban.com/v2/book/isbn/')
@@ -85,4 +82,5 @@ module Fux
       {name: name.strip, cover: cover[7..-1], src: 'm_jd'}
     end
   end
+
 end

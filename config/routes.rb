@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :books do
     collection do
       get 'sniffer'
+      get 'jd_get_isbn'
       post 'borrow_by_isbn'
       post 'ret'
     end

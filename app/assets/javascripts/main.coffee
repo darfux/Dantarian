@@ -6,13 +6,20 @@
 
 
 # The main contoller logic
-@mainCtrl.controller("MainCtrl", ['$scope', '$interval', '$window', 'NetManager', 'Helper', 
-($scope, $interval, $window, NetManager, Helper)->
+@mainCtrl.controller("MainCtrl", ['$scope', '$interval', '$window', 'NetManager', 'Helper', 'nodeValidator'
+($scope, $interval, $window, NetManager, Helper, nodeValidator)->
+
+	$scope.$watch('book.jd_id', ->
+		jd_id = $scope.book.jd_id
+		if jd_id &&　$scope.aio_form.$valid
+			$scope.book.searching = true
+			NetManager.get('/books/jd_get_isbn', {item_id: jd_id}).to($scope.book, 'isbn')
+	)
 
 	$scope.$watch('book.isbn', ->
 		$scope.error_msg = ""
 		isbn = $scope.book.isbn
-		if isbn && $scope.borrow_form.$valid
+		if isbn && $scope.aio_form.$valid
 			$scope.book.searching = true
 			NetManager.get('/books/sniffer', {isbn: isbn}).then (data)->
 				$scope.borrow_btn = true if data.src != 'none'
@@ -27,28 +34,31 @@
 			$scope.borrow_btn= false
 	)
 
+
 	scattrs = {
-		book: {isbn: ''}
+		aio: {input: undefined}
+		book: {isbn: '', jd_id: null}
 		isbn_pattern: /^\d+$/
-		input_has_value: ->
-			$scope.borrow_form.isbn.$viewValue
+
+		
 		input_is_correct: (allowempty)->
 			allowempty = true if allowempty == undefined
-			ret = (allowempty && !@input_has_value()) || $scope.borrow_form.isbn.$valid
+			ret = (allowempty && !$scope.aio_form.input.$viewValue) ||  $scope.aio_form.$valid
+			ret
 		
 		author_brief: (book)->
 			Helper.brief(book.author, 12)
 
 		handle_clear: ()->
-			$scope.book.isbn = null
-			$('#isbn-input').val('')
-			$scope.borrow_form.isbn.$viewValue = ""
+			$scope.book = {isbn: '', jd_id: null}
+			$('#aio-input').val('')
+			$scope.aio_form.isbn.$viewValue = ""
 			$scope.response_msg = ""
 			$scope.borrow_btn = false
 
 
 		handle_borrow: (event)->
-			if !$scope.borrow_form.$valid
+			if !$scope.aio_form.$valid
 				event.preventDefault()
 			else
 				NetManager.post('/books/borrow_by_isbn', {book: {book_info_attributes: $scope.book}}).then (data)->
@@ -86,4 +96,43 @@
 	}
 
 	angular.extend($scope, scattrs)
+])
+.directive('allInOne', ['nodeValidator', (validator)->
+	return {
+		require: 'ngModel',
+		restrict: 'A',
+		link: (scope, element, attrs, controller)->
+			# http://stackoverflow.com/questions/22639485/angularjs-how-to-change-the-value-of-ngmodel-in-custom-directive
+			updateView = (value)->
+				controller.$viewValue = value;
+				controller.$render(); 
+
+			updateModel = (value)->
+				controller.$modelValue = value;
+				$scope.ngModel = value; # overwrites ngModel value
+
+			controller.$validators.allInOne = (modelValue, viewValue)->
+				if (controller.$isEmpty(modelValue))
+					return true
+				isbn_ok = validator.isISBN(viewValue)
+				if isbn_ok
+					scope.book.isbn = viewValue
+					return true
+
+				jd_url_ok = viewValue.match(/(http(s|):\/\/|)item.jd.com\/(\d+).html/)
+				if jd_url_ok
+					item_id = jd_url_ok[3]
+					scope.book.jd_id = item_id
+					jdv = 'JD-' + item_id
+					updateView(jdv);
+					return true
+
+				jd_ok = viewValue.match(/JD\-(\d+)/)
+				if jd_ok
+					console.log jd_ok
+					scope.book.jd_id = jd_ok[1]
+					return true
+
+				false
+	};
 ])

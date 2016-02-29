@@ -73,6 +73,10 @@ class BooksController < ApplicationController
     render json: result
   end
 
+  def jd_get_isbn
+    render text: Fux::ISBNSniffer.sniff_jd(params[:item_id])
+  end
+
   def borrow_by_isbn
     if @info.nil?
       @book = Book.new(book_params)
