@@ -4,13 +4,15 @@
 		<div id="nickname"><%= @current_user.nickname %></div>
 		<div id="account"><%= @current_user.account %></div>
 	</div>
+
 </div>
 <div id="content">
 	<div id="borrow-bar">
 		<form ng-submit="handle_borrow($event)" name="aio_form" novalidate>
+			{{aio_form.$valid}}
 			<div id="borrow_input">
 				<%= text_field_tag :input, nil, {id: 'aio-input', "ng-model": "aio.input", 'all-in-one': '', required: '',spellcheck: false, "ng-class": "{inputing: input.focus, correct: input_is_correct(false), error: !input_is_correct()}", autocomplete: "off", "ng-focus": "input.focus=true;", "ng-blur": "input.focus=false"}%>
-				<span id="clear-btn" ng-show="input_has_value()" ng-click="handle_clear()">x</span>
+				<span id="clear-btn" ng-show="aio_form.input.$viewValue" ng-click="handle_clear()">x</span>
 			</div>
 			<div id="search-popup" ng-show="input_is_correct(false)">
 				<div ng-show="book.searching" class="loading">Loading...</div>
@@ -22,7 +24,11 @@
 					<p>{{book.name}}</p>
 					<p>{{book.author}}</p>
 					<span id="response-msg" ng-class="{ok: 'success', fail: 'error'}[book.borrow_state]">{{response_msg}}</span>
-					<button ng-show="borrow_btn" type="submit" class="button">借阅</button>
+					<div id="operation-button-group">
+						<div id="borrow-btn"><button ng-show="btn.borrow" type="submit" class="button">借阅</button></div>					
+						<div id="fav-icon"><ng-md-icon icon="favorite" size="35" ng-show="btn.wish" title="加入愿望单"></ng-md-icon></div>
+					</div>
+
 					<button ng-show="ok_btn" class="button" ng-click="ok_btn=false;handle_clear()">知道了</button>
 				</div>
 				</div>

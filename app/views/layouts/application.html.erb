@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta http-equiv=Content-Type content="text/html;charset=utf-8">
   <title>Dantarian</title>
   <% unless Rails.env.production? %>
-		<script src="/bower_components/angular/angular.js"></script>
-		<script src="/bower_components/angular-animate/angular-animate.js"></script>	  
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/angular-animate/angular-animate.js"></script>  
+    <script src="/bower_components/angular-material-icons/angular-material-icons.min.js"></script> 
   <% else %>
-		<script src="//cdn.bootcss.com/angular.js/1.4.8/angular.min.js"></script>
-		<script src="//cdn.bootcss.com/angular.js/1.4.8/angular-animate.min.js"></script>
+    <script src="//cdn.bootcss.com/angular.js/1.4.8/angular.min.js"></script>
+    <script src="//cdn.bootcss.com/angular.js/1.4.8/angular-animate.min.js"></script>
+    <script src="//cdn.bootcss.com/angular-material-icons/0.6.0/angular-material-icons.min.js"></script>
   <% end %>
   <script type="text/javascript" src="/bower_components/angular.validators/angular.validators<%= use_min! %>.js"></script>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>

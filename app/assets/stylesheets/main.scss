@@ -185,29 +185,47 @@ $correct-color: #44AA88;
 	#book-info{
 		position: relative;
 		vertical-align: top;
-		width: 200px;
+		width: 220px;
 		height: 200px;
 		margin-left: 20px;
 		display: inline-block;
 		p{
 			font-size: 16px;
 		}
-		button{
+		#operation-button-group{
 			position: absolute;
 			bottom: 30px;
-			right: 30px;
-			height: 36px;
-			width: 92px;
-			border: none;
-			border-radius: 6px;
-			background-color: #6666CC;
-			color: white;
-			&:hover{
-				cursor: pointer;
-				background-color: darken(#6666CC, 5%);
+			right: 0px;
+			height: 40px;
+			#borrow-btn{
+				display: inline-block;
+				button{
+					height: 36px;
+					width: 92px;
+					border: none;
+					border-radius: 6px;
+					background-color: #6666CC;
+					color: white;
+					&:hover{
+						cursor: pointer;
+						background-color: darken(#6666CC, 5%);
+					}
+					&:active{
+						background-color: lighten(#6666CC, 5%);
+					}
+				}
 			}
-			&:active{
-				background-color: lighten(#6666CC, 5%);
+			#fav-icon{
+				display: inline-block;
+				position: relative;
+				vertical-align: top;
+				margin-top: 0px;
+				margin-left: 10px;
+				fill: lighten(gray, 30%);
+				&:hover{
+					cursor: pointer;
+					fill: lighten(gray, 20%);
+				}
 			}
 		}
 	}

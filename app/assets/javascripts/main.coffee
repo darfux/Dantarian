@@ -12,33 +12,40 @@
 	$scope.$watch('book.jd_id', ->
 		jd_id = $scope.book.jd_id
 		if jd_id &&　$scope.aio_form.$valid
+			$scope.book.isbn = null
 			$scope.book.searching = true
 			NetManager.get('/books/jd_get_isbn', {item_id: jd_id}).to($scope.book, 'isbn')
+
 	)
 
 	$scope.$watch('book.isbn', ->
 		$scope.error_msg = ""
 		isbn = $scope.book.isbn
+		$scope.book.show = false
+		$scope.btn = {}
 		if isbn && $scope.aio_form.$valid
 			$scope.book.searching = true
 			NetManager.get('/books/sniffer', {isbn: isbn}).then (data)->
-				$scope.borrow_btn = true if data.src != 'none'
+				if data.src != 'none'
+					unless $scope.ok.jd
+						$scope.btn.borrow = true 
+					$scope.btn.wish = true
+				console.log 233
 				$scope.book.searching = false
 				$scope.book.cover = data.cover
 				$scope.book.name = data.name
 				$scope.book.author = data.author
 				$scope.book.source = data.src
 				$scope.book.show = true
-		else
-			$scope.book.show = false
-			$scope.borrow_btn= false
+
 	)
 
 
 	scattrs = {
-		aio: {input: undefined}
-		book: {isbn: '', jd_id: null}
-		isbn_pattern: /^\d+$/
+		aio: {input: '9787115226266'}
+		book: {isbn: '9787115226266', jd_id: null}
+		ok: {}
+		btn: {}
 
 		
 		input_is_correct: (allowempty)->
@@ -52,9 +59,11 @@
 		handle_clear: ()->
 			$scope.book = {isbn: '', jd_id: null}
 			$('#aio-input').val('')
-			$scope.aio_form.isbn.$viewValue = ""
+			$scope.aio.input = null
+			$scope.aio_form.input.$viewValue = ""
 			$scope.response_msg = ""
-			$scope.borrow_btn = false
+			$scope.btn = {}
+			$scope.aio_form.input.$setDirty();
 
 
 		handle_borrow: (event)->
@@ -116,6 +125,7 @@
 					return true
 				isbn_ok = validator.isISBN(viewValue)
 				if isbn_ok
+					scope.ok.isbn = true
 					scope.book.isbn = viewValue
 					return true
 
@@ -124,12 +134,13 @@
 					item_id = jd_url_ok[3]
 					scope.book.jd_id = item_id
 					jdv = 'JD-' + item_id
+					viewValue = jdv
 					updateView(jdv);
-					return true
 
 				jd_ok = viewValue.match(/JD\-(\d+)/)
 				if jd_ok
-					console.log jd_ok
+					console.log 123
+					scope.ok.jd = true
 					scope.book.jd_id = jd_ok[1]
 					return true
 
