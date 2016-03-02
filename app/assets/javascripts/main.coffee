@@ -30,7 +30,6 @@
 					unless $scope.ok.jd
 						$scope.btn.borrow = true 
 					$scope.btn.wish = true
-				console.log 233
 				$scope.book.searching = false
 				$scope.book.cover = data.cover
 				$scope.book.name = data.name
@@ -42,8 +41,8 @@
 
 
 	scattrs = {
-		aio: {input: '9787115226266'}
-		book: {isbn: '9787115226266', jd_id: null}
+		aio: {input: ''}
+		book: {isbn: '', jd_id: null}
 		ok: {}
 		btn: {}
 
@@ -63,7 +62,6 @@
 			$scope.aio_form.input.$viewValue = ""
 			$scope.response_msg = ""
 			$scope.btn = {}
-			$scope.aio_form.input.$setDirty();
 
 
 		handle_borrow: (event)->
@@ -103,7 +101,7 @@
 			$scope.ret_book = null
 			$interval.cancel($scope.ret_timer)
 	}
-
+	$scope.ok = {}
 	angular.extend($scope, scattrs)
 ])
 .directive('allInOne', ['nodeValidator', (validator)->
@@ -113,33 +111,31 @@
 		link: (scope, element, attrs, controller)->
 			# http://stackoverflow.com/questions/22639485/angularjs-how-to-change-the-value-of-ngmodel-in-custom-directive
 			updateView = (value)->
-				controller.$viewValue = value;
-				controller.$render(); 
+				controller.$setViewValue(value)
+				controller.$commitViewValue();
+				controller.$render()
 
 			updateModel = (value)->
-				controller.$modelValue = value;
-				$scope.ngModel = value; # overwrites ngModel value
+				controller.$modelValue = value
+				scope.ngModel = value # overwrites ngModel value
 
 			controller.$validators.allInOne = (modelValue, viewValue)->
 				if (controller.$isEmpty(modelValue))
 					return true
-				isbn_ok = validator.isISBN(viewValue)
+				isbn_ok = validator.isISBN(modelValue)
 				if isbn_ok
 					scope.ok.isbn = true
-					scope.book.isbn = viewValue
+					scope.book.isbn = modelValue
 					return true
-
-				jd_url_ok = viewValue.match(/(http(s|):\/\/|)item.jd.com\/(\d+).html/)
-				if jd_url_ok
-					item_id = jd_url_ok[3]
+				
+				if jd_url = viewValue.match(/(http(s|):\/\/|)item.jd.com\/(\d+).html/)
+					item_id = jd_url[3]
 					scope.book.jd_id = item_id
-					jdv = 'JD-' + item_id
-					viewValue = jdv
-					updateView(jdv);
+					value = 'JD-' + item_id
+					updateView(value)
 
 				jd_ok = viewValue.match(/JD\-(\d+)/)
 				if jd_ok
-					console.log 123
 					scope.ok.jd = true
 					scope.book.jd_id = jd_ok[1]
 					return true

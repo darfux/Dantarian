@@ -1,5 +1,5 @@
 <!-- aio means All In One -->
-<div id="header" ng-class="{inputing: input.focus, correct: aio_form.isbn.$valid, error: !input_is_correct(), returning: ret_book}">
+<div id="header" ng-class="{inputing: input.focus, correct: aio_form.input.$valid, error: !input_is_correct(), returning: ret_book}">
 	<div id="user-info">
 		<div id="nickname"><%= @current_user.nickname %></div>
 		<div id="account"><%= @current_user.account %></div>
@@ -9,7 +9,6 @@
 <div id="content">
 	<div id="borrow-bar">
 		<form ng-submit="handle_borrow($event)" name="aio_form" novalidate>
-			{{aio_form.$valid}}
 			<div id="borrow_input">
 				<%= text_field_tag :input, nil, {id: 'aio-input', "ng-model": "aio.input", 'all-in-one': '', required: '',spellcheck: false, "ng-class": "{inputing: input.focus, correct: input_is_correct(false), error: !input_is_correct()}", autocomplete: "off", "ng-focus": "input.focus=true;", "ng-blur": "input.focus=false"}%>
 				<span id="clear-btn" ng-show="aio_form.input.$viewValue" ng-click="handle_clear()">x</span>
