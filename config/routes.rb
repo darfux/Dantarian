@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       get 'jd_get_isbn'
       post 'borrow_by_isbn'
       post 'ret'
+      post 'favor'
     end
   end
   # You can have the root of your site routed with "root"

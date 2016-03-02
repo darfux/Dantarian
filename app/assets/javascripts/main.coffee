@@ -35,6 +35,7 @@
 				$scope.book.name = data.name
 				$scope.book.author = data.author
 				$scope.book.source = data.src
+				$scope.book.favored = data.favored
 				$scope.book.show = true
 
 	)
@@ -52,9 +53,16 @@
 			ret = (allowempty && !$scope.aio_form.input.$viewValue) ||  $scope.aio_form.$valid
 			ret
 		
+		get_book_parm: ->
+			{book: {book_info_attributes: angular.copy($scope.book)}}
+		
 		author_brief: (book)->
 			Helper.brief(book.author, 12)
 
+		handle_paste: ()->
+			$scope.book = {isbn: '', jd_id: null}
+			$scope.ok = {}
+		
 		handle_clear: ()->
 			$scope.book = {isbn: '', jd_id: null}
 			$('#aio-input').val('')
@@ -63,28 +71,35 @@
 			$scope.response_msg = ""
 			$scope.btn = {}
 
+		handle_favor: ()->
+			console.log $scope.book
+			parm = @get_book_parm()
+			# book_info = parm.book.book_info_attributes
+			# book_info.favored = !book_info.favored
+			NetManager.post('/books/favor', parm).then (data)->
+				$scope.book.favored = data.favored
+				console.log data
 
 		handle_borrow: (event)->
-			if !$scope.aio_form.$valid
-				event.preventDefault()
-			else
-				NetManager.post('/books/borrow_by_isbn', {book: {book_info_attributes: $scope.book}}).then (data)->
-					$scope.borrow_btn = false
-					$scope.book.borrow_state = data.status
-					if data.status=='ok'
-						$interval(
-							->
-								$scope.handle_clear()
-								$scope.borrowed_books = data.borrowed_books
-							,
-							1000,1
-						)
-						$scope.response_msg = "借书成功！"
-					if data.status=='fail'
-						if data.errno=='borrowed'
-							$scope.ok_btn = true
-							u =  data.users[0]
-							$scope.response_msg = "该书已被#{u.nickname}(#{u.account})借阅！"
+			NetManager.post('/books/borrow_by_isbn', @get_book_parm()).then (data)->
+				$scope.borrow_btn = false
+				$scope.book.borrow_state = data.status
+				if data.status=='ok'
+					$interval(
+						->
+							$scope.handle_clear()
+							$scope.borrowed_books = data.borrowed_books
+						,
+						1000,1
+					)
+					$scope.response_msg = "借书成功！"
+				if data.status=='fail'
+					if data.errno=='borrowed'
+						$scope.btn = {known: true}
+						u =  data.users[0]
+						$scope.response_msg = "该书已被#{u.nickname}(#{u.account})借阅！"
+		
+
 		handle_ret: (event, book_id)->
 			return if event.button != 0
 			$scope.ret_book = book_id
@@ -100,6 +115,8 @@
 		handle_cancel_ret: ->
 			$scope.ret_book = null
 			$interval.cancel($scope.ret_timer)
+
+
 	}
 	$scope.ok = {}
 	angular.extend($scope, scattrs)
@@ -114,10 +131,6 @@
 				controller.$setViewValue(value)
 				controller.$commitViewValue();
 				controller.$render()
-
-			updateModel = (value)->
-				controller.$modelValue = value
-				scope.ngModel = value # overwrites ngModel value
 
 			controller.$validators.allInOne = (modelValue, viewValue)->
 				if (controller.$isEmpty(modelValue))

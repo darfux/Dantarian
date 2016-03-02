@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
   before_action :set_book, only: [:show, :edit, :update, :destroy]
-  before_action :set_info, only: [:borrow_by_isbn]
+  before_action :set_info, only: [:borrow_by_isbn, :favor]
 
   # GET /books
   # GET /books.json
@@ -70,6 +70,9 @@ class BooksController < ApplicationController
     else
       result = {name: bi.name, cover: bi.cover, author: bi.author, src: bi.source}
     end
+    favored = !bi.users.find_by(id: current_user.id).nil?
+    result[:favored] = favored
+
     render json: result
   end
 
@@ -102,6 +105,19 @@ class BooksController < ApplicationController
     render json: {status: 'ok', borrowed_books: @current_user.borrowed_books}, status: :ok
   end
 
+  def favor
+    if @info.nil?
+      @info = BookInfo.new(book_info_params)
+    end
+    favor = !book_info_params['favored']
+    if favor
+      @info.users << @current_user
+    else
+      @info.users.delete @current_user
+    end
+    render json: {status: 'ok', favored: favor}
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_book
@@ -114,13 +130,19 @@ class BooksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def book_params
-      params.require(:book).permit(book_info_attributes: [:isbn, :name, :cover, :author, :source]).tap{ |book|
+      params.require(:book).permit(book_info_attributes: [:isbn, :name, :cover, :author, :source, :favored]).tap{ |book|
         book["book_info_attributes"]["isbn"].gsub!(/[- ]/, '')
       }
     end
 
+    def book_info_params
+      params.require(:book).require(:book_info_attributes).permit(:isbn, :name, :cover, :author, :source, :favored).tap{ |bi|
+        bi["isbn"].gsub!(/[- ]/, '')
+      }
+    end
+
     def pisbn
-      book_params["book_info_attributes"]["isbn"]
+      book_info_params["isbn"]
     end
 
 end

@@ -197,22 +197,22 @@ $correct-color: #44AA88;
 			bottom: 30px;
 			right: 0px;
 			height: 40px;
-			#borrow-btn{
+			.btn{
 				display: inline-block;
-				button{
-					height: 36px;
-					width: 92px;
-					border: none;
-					border-radius: 6px;
-					background-color: #6666CC;
-					color: white;
-					&:hover{
-						cursor: pointer;
-						background-color: darken(#6666CC, 5%);
-					}
-					&:active{
-						background-color: lighten(#6666CC, 5%);
-					}
+			}
+			button{
+				height: 36px;
+				width: 92px;
+				border: none;
+				border-radius: 6px;
+				background-color: #6666CC;
+				color: white;
+				&:hover{
+					cursor: pointer;
+					background-color: darken(#6666CC, 5%);
+				}
+				&:active{
+					background-color: lighten(#6666CC, 5%);
 				}
 			}
 			#fav-icon{
@@ -222,9 +222,15 @@ $correct-color: #44AA88;
 				margin-top: 0px;
 				margin-left: 10px;
 				fill: lighten(gray, 30%);
+				&.favored{
+					fill: darken(pink, 16%);
+				}
 				&:hover{
 					cursor: pointer;
 					fill: lighten(gray, 20%);
+					&.favored{
+						fill: darken(red, 22%);
+					}
 				}
 			}
 		}
