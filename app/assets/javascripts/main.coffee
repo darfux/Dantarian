@@ -26,7 +26,7 @@
 		if isbn && $scope.aio_form.$valid
 			$scope.book.searching = true
 			NetManager.get('/books/sniffer', {isbn: isbn}).then (data)->
-				if data.src != 'none'
+				if data.source != 'none'
 					unless $scope.ok.jd
 						$scope.btn.borrow = true 
 					$scope.btn.wish = true
@@ -34,12 +34,11 @@
 				$scope.book.cover = data.cover
 				$scope.book.name = data.name
 				$scope.book.author = data.author
-				$scope.book.source = data.src
+				$scope.book.source = data.source
 				$scope.book.favored = data.favored
 				$scope.book.show = true
 
 	)
-
 
 	scattrs = {
 		aio: {input: ''}
@@ -71,14 +70,10 @@
 			$scope.response_msg = ""
 			$scope.btn = {}
 
-		handle_favor: ()->
-			console.log $scope.book
-			parm = @get_book_parm()
-			# book_info = parm.book.book_info_attributes
-			# book_info.favored = !book_info.favored
-			NetManager.post('/books/favor', parm).then (data)->
-				$scope.book.favored = data.favored
-				console.log data
+		handle_favor: (book)->
+			NetManager.post(
+				'/books/favor', {isbn: book.isbn, favored: book.favored}).then (data)->
+					book.favored = data.favored
 
 		handle_borrow: (event)->
 			NetManager.post('/books/borrow_by_isbn', @get_book_parm()).then (data)->

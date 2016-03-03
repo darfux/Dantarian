@@ -27,7 +27,7 @@
 					<div id="operation-button-group">
 						<div id="borrow-btn" class="btn" ng-show="btn.borrow"><button ng-click="handle_borrow($event)" >借阅</button></div>				
 						<div id="ok-btn" class="btn" ng-show="btn.known"><button ng-click="ok_btn=false;handle_clear()">知道了</button></div>
-						<div id="fav-icon" ng-show="btn.wish" ng-class="{favored: book.favored}"><ng-md-icon icon="favorite" size="35" title="加入愿望单"   ng-click="handle_favor()"></ng-md-icon></div>
+						<div id="fav-icon" ng-show="btn.wish" ng-class="{favored: book.favored}"><ng-md-icon icon="favorite" size="35" title="加入愿望单"   ng-click="handle_favor(book)"></ng-md-icon></div>
 					</div>
 
 				</div>
@@ -38,11 +38,21 @@
 
 	<div id="borrowed-list"ng-init="borrowed_books=<%= @current_user.borrowed_books.to_json %>">
 	<div ng-repeat="book in borrowed_books" class="list-cell" ng-class="{fade: ret_book==book.id}">
-		<img ng-src="{{book.cover}}">
-		<span class="name">{{book.name}}</span>
-		<span class="author" title="{{book.author}}">{{author_brief(book)}}</span>
-		<span class="isbn">{{book.isbn}}</span>
-		<span class="retbook_btn" title="还书请按住我"><button ng-mousedown="handle_ret($event, book.id)" ng-mouseup="handle_cancel_ret()"></button></span>
+			<!-- {{book}} -->
+		<span class="cover-group" ng-class="{favored: book.favored}">
+			<div class="favor"  ng-class="{favored: book.favored}">
+				<ng-md-icon icon="favorite" size="35" title="红心"  ng-click="handle_favor(book)"></ng-md-icon>
+			</div>
+			<div class="favor-bg" ng-class="{favored: book.favored}"></div>
+			<div class="cover">
+				<img ng-src="{{book.cover}}"/>
+			</div>
+			<div class="name  cell-elm">{{book.name}}</div>
+		</span>
+
+		<span class="author cell-elm" title="{{book.author}}">{{author_brief(book)}}</span>
+		<span class="isbn cell-elm">{{book.isbn}}</span>
+		<span class="retbook_btn cell-elm" title="还书请按住我"><button ng-mousedown="handle_ret($event, book.id)" ng-mouseup="handle_cancel_ret()"></button></span>
 	</div>
 	</div>
 </div>

@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
   before_action :set_book, only: [:show, :edit, :update, :destroy]
-  before_action :set_info, only: [:borrow_by_isbn, :favor]
+  before_action :set_info, only: [:borrow_by_isbn]
 
   # GET /books
   # GET /books.json
@@ -65,12 +65,13 @@ class BooksController < ApplicationController
   def sniffer
     isbn = params[:isbn]
     bi = BookInfo.find_by(isbn: isbn)
+    favored = false
     if bi.nil?
       result = Fux::BookSniffer.sniff(isbn)
     else
       result = {name: bi.name, cover: bi.cover, author: bi.author, src: bi.source}
+      favored = !bi.users.find_by(id: current_user.id).nil?
     end
-    favored = !bi.users.find_by(id: current_user.id).nil?
     result[:favored] = favored
 
     render json: result
@@ -106,16 +107,20 @@ class BooksController < ApplicationController
   end
 
   def favor
+    @isbn = params['isbn']
+    @favored = !params['favored']
+    @info = BookInfo.find_by(isbn: @isbn)
     if @info.nil?
-      @info = BookInfo.new(book_info_params)
+      metadata = Fux::BookSniffer.sniff(@isbn)
+      @info = BookInfo.new(metadata)
+      @info.save!
     end
-    favor = !book_info_params['favored']
-    if favor
+    if @favored
       @info.users << @current_user
     else
       @info.users.delete @current_user
     end
-    render json: {status: 'ok', favored: favor}
+    render json: {status: 'ok', isbn: @isbn, favored: @favored}
   end
 
   private
@@ -130,13 +135,13 @@ class BooksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def book_params
-      params.require(:book).permit(book_info_attributes: [:isbn, :name, :cover, :author, :source, :favored]).tap{ |book|
+      params.require(:book).permit(book_info_attributes: [:isbn, :name, :cover, :author, :source]).tap{ |book|
         book["book_info_attributes"]["isbn"].gsub!(/[- ]/, '')
       }
     end
 
     def book_info_params
-      params.require(:book).require(:book_info_attributes).permit(:isbn, :name, :cover, :author, :source, :favored).tap{ |bi|
+      params.require(:book).require(:book_info_attributes).permit(:isbn, :name, :cover, :author, :source).tap{ |bi|
         bi["isbn"].gsub!(/[- ]/, '')
       }
     end

@@ -1,7 +1,7 @@
 @ng_app = angular.module(
 	'Dantarian',
 	[
-		'ngAnimate',
+		# 'ngAnimate',
 		'ngMdIcons',
 		'ngResource',
 		'angular.validators',

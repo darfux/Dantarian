@@ -27,7 +27,6 @@ module Fux
       book = nil
       if defined? Rails
         book = Rails.cache.read({isbn: isbn})
-        p book
       end
       unless book
         uri = URI('https://api.douban.com/v2/book/isbn/')
@@ -37,7 +36,7 @@ module Fux
           Rails.cache.write({isbn: isbn}, book)
         end
       end
-      {name: book['title'], cover: book['image'], author: book['author'].join, src: 'db'}
+      {isbn: isbn, name: book['title'], cover: book['image'], author: book['author'].join, source: 'db'}
     end
 
     def self.sniff_from_dangdang(isbn)
@@ -49,7 +48,7 @@ module Fux
       line = html_doc.css(".line1")
       cover = line.css('img').first['src']
       name = line.css('.name a').first['title']
-      {name: name.strip, cover: cover[7..-1], src: 'dd'}
+      {isbn: isbn, name: name.strip, cover: cover[7..-1], source: 'dd'}
     end
 
     def self.sniff_from_m_dangdang(isbn)
@@ -61,7 +60,7 @@ module Fux
       p_left = html_doc.css(".p_left")
       cover = p_left.css('a img').first['data-original']
       name = p_left.css('.name').first.content
-      {name: name.strip, cover: cover[7..-1], src: 'm_dd'}
+      {isbn: isbn, name: name.strip, cover: cover[7..-1], source: 'm_dd'}
     end
 
     def self.sniff_from_jd(isbn)
@@ -72,7 +71,7 @@ module Fux
       html_doc = Nokogiri::HTML(res.body)
       cover = html_doc.css("#J_goodsList").css('.p-img img').first['src']
       name = html_doc.css("#J_goodsList").css('.p-name em').first.children[0].content
-      {name: name.strip, cover: cover[2..-1], src: 'jd'}
+      {isbn: isbn, name: name.strip, cover: cover[2..-1], source: 'jd'}
     end
 
     def self.sniff_from_m_jd(isbn)
@@ -89,7 +88,7 @@ module Fux
       first = hash["wareList"][0]
       cover = first["longImgUrl"]
       name = first["wname"]
-      {name: name.strip, cover: cover[7..-1], src: 'm_jd'}
+      {isbn: isbn, name: name.strip, cover: cover[7..-1], source: 'm_jd'}
     end
   end
 

@@ -122,17 +122,6 @@ $correct-color: #44AA88;
 			cursor: pointer;
 		}
 	}
-	@-webkit-keyframes inputwarning{    /*透明度由0到1*/
-	    0%{
-	       border-bottom-color: transparent;
-	     }
-	    50%{
-	       border-bottom-color: red;
-	    }
-	    100%{
-	       border-bottom-color: transparent;
-	    }
-	}
 
 	@mixin abtolute-mid($width) {
 		position: absolute;
@@ -247,9 +236,9 @@ $correct-color: #44AA88;
 			border-bottom: solid 1px #EEE;
 			margin-top: 8px;
 			font-size: 16px; 
-			span{	
+			.cell-elm{	
 				text-align: left;
-				margin-top: 32px;
+				margin-top: 20px;
 				margin-left: 32px;
 			}
 			opacity: 1;
@@ -258,20 +247,73 @@ $correct-color: #44AA88;
 				opacity: 0;
 			}
 		}
-		img{
-			margin-top: 0px;
-			width: 64px;
-			height: 72px;
+		$img-width: 64px;
+		$img-height: 72px;
+		.cover-group{
+			display: inline-block;
+			&:not(.favored){
+				&:hover{
+					.cover{
+						transition: opacity 0.25s ease-in-out 0s;
+						opacity: 0.4;
+					}
+					.favor{
+						transition: opacity 0.25s ease-in-out 0s;
+						opacity: 0.8;
+					}
+				}
+			}
+			img{
+				margin-top: 0px;
+				width: $img-width;
+				height: $img-height;
+			}
+			.favor-bg{
+				background-color: white;
+				opacity: 0.6;
+				top: $img-height/2-16px;
+				width: 64px;
+				height: 32px;
+				display: none;
+				opacity: 0.6;
+				&.favored{
+					display: inline;
+				}
+				// http://stackoverflow.com/questions/24915584/css-transition-and-z-index-conflict
+				z-index: 1;
+			}
+			.cover{
+				transition: opacity 0.25s ease-in-out 0s;
+				display: inline-block;
+			}
+			.favor, .favor-bg{
+				position: absolute;
+			}
+			.favor{
+				display: inline-block;
+				vertical-align: text-top;
+				top: $img-height/2-17px;
+				left: $img-width/2;
+				opacity: 0;
+				path:hover{
+					cursor: pointer;
+				}
+				&.favored{
+					opacity: 0.6;
+					fill: darken(pink, 16%);
+				}
+				z-index: 2;
+			}
 		}
 		.name, .author, .isbn, .retbook_btn{
 			vertical-align: top;
 			display: inline-block;
 		}
 		.name{
-			width: 180px;
+			width: 200px;
 		}
 		.author{
-			width: 120px;
+			width: 100px;
 		}
 		.isbn{		
 			width: 100px;
