@@ -25,5 +25,8 @@ module Dantarian
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # This cache store uses the file system to store entries. 
+    config.cache_store = :file_store, "/tmp/dantarian"
   end
 end

@@ -24,9 +24,19 @@ module Fux
 
 
     def self.sniff_from_douban(isbn)
-      uri = URI('https://api.douban.com/v2/book/isbn/')
-      res = Net::HTTP.get_response(uri+isbn)
-      book = JSON.parse(res.body)
+      book = nil
+      if defined? Rails
+        book = Rails.cache.read({isbn: isbn})
+        p book
+      end
+      unless book
+        uri = URI('https://api.douban.com/v2/book/isbn/')
+        res = Net::HTTP.get_response(uri+isbn)
+        book = JSON.parse(res.body)
+        if defined? Rails
+          Rails.cache.write({isbn: isbn}, book)
+        end
+      end
       {name: book['title'], cover: book['image'], author: book['author'].join, src: 'db'}
     end
 
