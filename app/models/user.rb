@@ -9,4 +9,23 @@ class User < ActiveRecord::Base
   def borrowed_books
     books.joins(:book_info).select("book_infos.*", "books.*")
   end
+
+  def related_books
+  	connection = ActiveRecord::Base.connection
+  	sql = %Q{
+		SELECT 
+		book_infos.name, book_infos.isbn, book_infos.cover, book_infos.author, book_infos.source,
+		COALESCE(borrowed_books.id, -1) as borrowed_id,
+    COALESCE(borrowed_books.updated_at, user_favor_books.created_at) as relate_time,
+		user_favor_books.id as favored
+		FROM "users"
+		LEFT OUTER JOIN book_infos ON book_infos.id = "user_favor_books"."book_info_id" 
+		LEFT OUTER JOIN "user_favor_books" ON "users"."id" = "user_favor_books"."user_id" 
+
+		LEFT OUTER JOIN books as borrowed_books ON  borrowed_books.user_id = users.id and  borrowed_books.book_info_id = book_infos.id
+  		WHERE users.id = #{self.id} AND (borrowed_books.id IS NOT NULL OR favored IS NOT NULL)
+    ORDER BY relate_time DESC
+  	}
+  	connection.execute(sql)
+  end
 end

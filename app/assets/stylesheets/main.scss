@@ -74,6 +74,7 @@ $correct-color: #44AA88;
 				color: #EEE;
 				font-size: 32px;
 				padding-top: 5px;
+				transition: opacity 0.35s ease-in-out;
 			}
 			font-family: AnglicanTextMini;
 			width: $borrow-bar-width;
@@ -118,6 +119,10 @@ $correct-color: #44AA88;
 		margin-left: $borrow-bar-width/2 - 24px;
 		margin-top: -8px;
 		top: 50%;
+		background-color: white;
+		width: 22px;
+		height: 22px;
+		border-radius: 13px;
 		&:hover{
 			cursor: pointer;
 		}
@@ -225,6 +230,10 @@ $correct-color: #44AA88;
 		}
 	}
 
+	@mixin fade-out() {
+		transition: opacity ease-in 1s;
+		opacity: 0;
+	}
 
 	#borrowed-list{
 		display: block;
@@ -233,6 +242,7 @@ $correct-color: #44AA88;
 		text-align: center;
 		margin: 64px auto 0;
 		.list-cell{
+			position: relative;
 			border-bottom: solid 1px #EEE;
 			margin-top: 8px;
 			font-size: 16px; 
@@ -243,8 +253,7 @@ $correct-color: #44AA88;
 			}
 			opacity: 1;
 			&.fade{
-				transition: opacity ease-in 1s;
-				opacity: 0;
+				@include fade-out();
 			}
 		}
 		$img-width: 64px;
@@ -260,6 +269,20 @@ $correct-color: #44AA88;
 					.favor{
 						transition: opacity 0.25s ease-in-out 0s;
 						opacity: 0.8;
+					}
+				}
+			}
+			&.favored{
+				&:hover{
+					.favor, .favor-bg{
+						transition: opacity 0.25s ease-in-out 0s;
+						opacity: 0.1;
+					}
+					.favor{
+						&:hover{
+							fill: darken(pink, 13.3%);
+							opacity: 1;
+						}
 					}
 				}
 			}
@@ -320,6 +343,12 @@ $correct-color: #44AA88;
 		}
 		.retbook_btn{
 			width: 72px;
+			&:not(.borrowed){
+				visibility: hidden;
+			}
+			&.fade{
+				@include fade-out();
+			}
 			button{
 				height: 32px;
 				width: 32px;
@@ -343,6 +372,7 @@ $correct-color: #44AA88;
 				&:active, &:focus{
 					outline: none;
 				}
+
 			}
 		}
 	}

@@ -40,6 +40,7 @@
 
 	)
 
+
 	scattrs = {
 		aio: {input: ''}
 		book: {isbn: '', jd_id: null}
@@ -71,29 +72,41 @@
 			$scope.btn = {}
 
 		handle_favor: (book)->
+			return if $scope.book.favoring
+			$scope.book.favoring = true
 			NetManager.post(
 				'/books/favor', {isbn: book.isbn, favored: book.favored}).then (data)->
 					book.favored = data.favored
+					$interval(
+						->
+							$scope.handle_clear()
+							if data.book_list
+								$scope.related_books = data.book_list
+						,
+						250,1
+					)
 
 		handle_borrow: (event)->
 			NetManager.post('/books/borrow_by_isbn', @get_book_parm()).then (data)->
-				$scope.borrow_btn = false
+				$scope.btn = {}
 				$scope.book.borrow_state = data.status
 				if data.status=='ok'
 					$interval(
 						->
 							$scope.handle_clear()
-							$scope.borrowed_books = data.borrowed_books
+							$scope.related_books = data.related_books
 						,
-						1000,1
+						500,1
 					)
 					$scope.response_msg = "借书成功！"
+
 				if data.status=='fail'
 					if data.errno=='borrowed'
-						$scope.btn = {known: true}
 						u =  data.users[0]
 						$scope.response_msg = "该书已被#{u.nickname}(#{u.account})借阅！"
-		
+					if data.errno=='no_copy'
+						$scope.response_msg = "该书尚未购入"
+					$scope.btn = {known: true}
 
 		handle_ret: (event, book_id)->
 			return if event.button != 0
@@ -103,7 +116,7 @@
 								NetManager.post('/books/ret', {book: {id: book_id}}).then (data)->
 									console.log data
 									$scope.ret_book = null
-									$scope.borrowed_books = data.borrowed_books
+									$scope.related_books = data.related_books
 							,
 							1000,1
 						)
@@ -115,6 +128,20 @@
 	}
 	$scope.ok = {}
 	angular.extend($scope, scattrs)
+
+	# AIO_TIPS = [
+	# 	"输入ISBN借阅书籍",
+	# 	"输入京东链接加入愿望单",
+	# ]
+	# tip_idx = 0
+	# $scope.aio_tip = AIO_TIPS[tip_idx++]
+	# $interval(
+	# 	->
+	# 		$scope.aio_tip = AIO_TIPS[tip_idx]
+	# 		tip_idx++; tip_idx %= AIO_TIPS.length
+	# 	,
+	# 	3000
+	# )
 ])
 .directive('allInOne', ['nodeValidator', (validator)->
 	return {

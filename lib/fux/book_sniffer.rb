@@ -1,7 +1,3 @@
-require 'net/http'
-require 'nokogiri'
-require 'json'
-
 module Fux
   class BookSniffer < Sniffer
     FAILED_LIMIT = 4;
@@ -10,12 +6,12 @@ module Fux
       isbn.to_s.gsub!(/[- ]/,'')
 
       failed_count = 0
-      result = {name: '404 book not found 0w0', 
-        cover: '', author: '', src: NONE}
+      result = {name: '汝尋之書 始皇焚矣', 
+        cover: '', author: '', source: NONE}
 
       begin
         result = sniff_from_douban(isbn)
-      ensure
+      rescue => e
       end
 
       result

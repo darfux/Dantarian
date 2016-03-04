@@ -1,3 +1,9 @@
+unless defined? Rails
+	require 'net/http'
+	require 'nokogiri'
+	require 'json'
+end
+
 module Fux
   class Sniffer
     def self.update_encoding(str, src_encoding)

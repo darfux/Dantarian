@@ -1,4 +1,8 @@
- module Fux
+unless defined? Rails
+  require './sniffer'
+end
+
+module Fux
   class ISBNSniffer < Sniffer
     def self.sniff_jd(item_id)
       uri = URI("http://item.jd.com/#{item_id}.html")

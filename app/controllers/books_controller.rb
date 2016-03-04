@@ -68,6 +68,9 @@ class BooksController < ApplicationController
     favored = false
     if bi.nil?
       result = Fux::BookSniffer.sniff(isbn)
+      if result[:cover].empty?
+        result[:cover] = '/images/404book.gif'
+      end
     else
       result = {name: bi.name, cover: bi.cover, author: bi.author, src: bi.source}
       favored = !bi.users.find_by(id: current_user.id).nil?
@@ -91,19 +94,23 @@ class BooksController < ApplicationController
     if @book
       @book.borrower = current_user
       if @book.save
-        render json: {status: 'ok', borrowed_books: @current_user.borrowed_books}, status: :ok
+        render json: {status: 'ok', related_books: @current_user.related_books}, status: :ok
         return
       end
     end
     @borrowed_users = @info.borrowed_users
-    render json: {status: 'fail', errno: 'borrowed', users: @borrowed_users}, status: :ok
+    unless @borrowed_users.empty?
+      render json: {status: 'fail', errno: 'borrowed', users: @borrowed_users}, status: :ok
+      return
+    end
+    render json: {status: 'fail', errno: 'no_copy'}, status: :ok
   end
 
   def ret
     @book = Book.find(params['book']['id'])
     @book.user = nil
     @book.save
-    render json: {status: 'ok', borrowed_books: @current_user.borrowed_books}, status: :ok
+    render json: {status: 'ok', related_books: @current_user.related_books}, status: :ok
   end
 
   def favor
@@ -120,7 +127,9 @@ class BooksController < ApplicationController
     else
       @info.users.delete @current_user
     end
-    render json: {status: 'ok', isbn: @isbn, favored: @favored}
+
+    @book_list = @current_user.related_books
+    render json: {status: 'ok', isbn: @isbn, favored: @favored, book_list: @book_list}
   end
 
   private
