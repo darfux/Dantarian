@@ -74,8 +74,9 @@ $correct-color: #44AA88;
 				color: #EEE;
 				font-size: 32px;
 				padding-top: 5px;
+				transition: opacity 0.35s ease-in-out;
 			}
-			font-family: AnglicanText;
+			font-family: AnglicanTextMini;
 			width: $borrow-bar-width;
 			height: 48px;
 			font-size: 40px;
@@ -118,20 +119,13 @@ $correct-color: #44AA88;
 		margin-left: $borrow-bar-width/2 - 24px;
 		margin-top: -8px;
 		top: 50%;
+		background-color: white;
+		width: 22px;
+		height: 22px;
+		border-radius: 13px;
 		&:hover{
 			cursor: pointer;
 		}
-	}
-	@-webkit-keyframes inputwarning{    /*透明度由0到1*/
-	    0%{
-	       border-bottom-color: transparent;
-	     }
-	    50%{
-	       border-bottom-color: red;
-	    }
-	    100%{
-	       border-bottom-color: transparent;
-	    }
 	}
 
 	@mixin abtolute-mid($width) {
@@ -185,33 +179,61 @@ $correct-color: #44AA88;
 	#book-info{
 		position: relative;
 		vertical-align: top;
-		width: 200px;
+		width: 220px;
 		height: 200px;
 		margin-left: 20px;
 		display: inline-block;
 		p{
 			font-size: 16px;
 		}
-		button{
+		#operation-button-group{
 			position: absolute;
 			bottom: 30px;
-			right: 30px;
-			height: 36px;
-			width: 92px;
-			border: none;
-			border-radius: 6px;
-			background-color: #6666CC;
-			color: white;
-			&:hover{
-				cursor: pointer;
-				background-color: darken(#6666CC, 5%);
+			right: 0px;
+			height: 40px;
+			.btn{
+				display: inline-block;
 			}
-			&:active{
-				background-color: lighten(#6666CC, 5%);
+			button{
+				height: 36px;
+				width: 92px;
+				border: none;
+				border-radius: 6px;
+				background-color: #6666CC;
+				color: white;
+				&:hover{
+					cursor: pointer;
+					background-color: darken(#6666CC, 5%);
+				}
+				&:active{
+					background-color: lighten(#6666CC, 5%);
+				}
+			}
+			#fav-icon{
+				display: inline-block;
+				position: relative;
+				vertical-align: top;
+				margin-top: 0px;
+				margin-left: 10px;
+				fill: lighten(gray, 30%);
+				&.favored{
+					fill: darken(pink, 16%);
+				}
+				&:hover{
+					cursor: pointer;
+					fill: lighten(gray, 20%);
+					&.favored{
+						fill: darken(red, 22%);
+					}
+				}
 			}
 		}
 	}
 
+	@mixin fade-out() {
+		transition: opacity ease-in 1s;
+		opacity: 0;
+	}
 
 	#borrowed-list{
 		display: block;
@@ -220,40 +242,113 @@ $correct-color: #44AA88;
 		text-align: center;
 		margin: 64px auto 0;
 		.list-cell{
+			position: relative;
 			border-bottom: solid 1px #EEE;
 			margin-top: 8px;
 			font-size: 16px; 
-			span{	
+			.cell-elm{	
 				text-align: left;
-				margin-top: 32px;
+				margin-top: 20px;
 				margin-left: 32px;
 			}
 			opacity: 1;
 			&.fade{
-				transition: opacity ease-in 1s;
-				opacity: 0;
+				@include fade-out();
 			}
 		}
-		img{
-			margin-top: 0px;
-			width: 64px;
-			height: 72px;
+		$img-width: 64px;
+		$img-height: 72px;
+		.cover-group{
+			display: inline-block;
+			&:not(.favored){
+				&:hover{
+					.cover{
+						transition: opacity 0.25s ease-in-out 0s;
+						opacity: 0.4;
+					}
+					.favor{
+						transition: opacity 0.25s ease-in-out 0s;
+						opacity: 0.8;
+					}
+				}
+			}
+			&.favored{
+				&:hover{
+					.favor, .favor-bg{
+						transition: opacity 0.25s ease-in-out 0s;
+						opacity: 0.1;
+					}
+					.favor{
+						&:hover{
+							fill: darken(pink, 13.3%);
+							opacity: 1;
+						}
+					}
+				}
+			}
+			img{
+				margin-top: 0px;
+				width: $img-width;
+				height: $img-height;
+			}
+			.favor-bg{
+				background-color: white;
+				opacity: 0.6;
+				top: $img-height/2-16px;
+				width: 64px;
+				height: 32px;
+				display: none;
+				opacity: 0.6;
+				&.favored{
+					display: inline;
+				}
+				// http://stackoverflow.com/questions/24915584/css-transition-and-z-index-conflict
+				z-index: 1;
+			}
+			.cover{
+				transition: opacity 0.25s ease-in-out 0s;
+				display: inline-block;
+			}
+			.favor, .favor-bg{
+				position: absolute;
+			}
+			.favor{
+				display: inline-block;
+				vertical-align: text-top;
+				top: $img-height/2-17px;
+				left: $img-width/2;
+				opacity: 0;
+				path:hover{
+					cursor: pointer;
+				}
+				&.favored{
+					opacity: 0.6;
+					fill: darken(pink, 16%);
+				}
+				z-index: 2;
+			}
 		}
 		.name, .author, .isbn, .retbook_btn{
 			vertical-align: top;
 			display: inline-block;
 		}
 		.name{
-			width: 180px;
+			width: 200px;
 		}
 		.author{
-			width: 120px;
+			width: 100px;
 		}
 		.isbn{		
 			width: 100px;
 		}
 		.retbook_btn{
 			width: 72px;
+			&:not(.borrowed){
+				visibility: hidden;
+			}
+			&.fade{
+				@include fade-out();
+			}
 			button{
 				height: 32px;
 				width: 32px;
@@ -277,6 +372,7 @@ $correct-color: #44AA88;
 				&:active, &:focus{
 					outline: none;
 				}
+
 			}
 		}
 	}

@@ -23,7 +23,7 @@ CusPromise = (promise_)->
 
 
 # NetManager that handle get and post action
-ng_app.factory("NetManager", ['$q', '$http', ($q, $http)->
+ng_app.factory("NetManager", ['$q', '$http', ($q, $http, $resource)->
 	net = {
 		get: (url, params_, flag)->
 			deferred = $q.defer();

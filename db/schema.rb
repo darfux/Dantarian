@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160226084440) do
+ActiveRecord::Schema.define(version: 20160302110309) do
 
   create_table "book_infos", force: :cascade do |t|
     t.string   "isbn"
@@ -33,6 +33,16 @@ ActiveRecord::Schema.define(version: 20160226084440) do
 
   add_index "books", ["book_info_id"], name: "index_books_on_book_info_id"
   add_index "books", ["user_id"], name: "index_books_on_user_id"
+
+  create_table "user_favor_books", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "book_info_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "user_favor_books", ["book_info_id"], name: "index_user_favor_books_on_book_info_id"
+  add_index "user_favor_books", ["user_id"], name: "index_user_favor_books_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "account",         null: false

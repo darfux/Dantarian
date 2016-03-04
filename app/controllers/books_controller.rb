@@ -65,12 +65,23 @@ class BooksController < ApplicationController
   def sniffer
     isbn = params[:isbn]
     bi = BookInfo.find_by(isbn: isbn)
+    favored = false
     if bi.nil?
       result = Fux::BookSniffer.sniff(isbn)
+      if result[:cover].empty?
+        result[:cover] = '/images/404book.gif'
+      end
     else
       result = {name: bi.name, cover: bi.cover, author: bi.author, src: bi.source}
+      favored = !bi.users.find_by(id: current_user.id).nil?
     end
+    result[:favored] = favored
+
     render json: result
+  end
+
+  def jd_get_isbn
+    render text: Fux::ISBNSniffer.sniff_jd(params[:item_id])
   end
 
   def borrow_by_isbn
@@ -83,19 +94,42 @@ class BooksController < ApplicationController
     if @book
       @book.borrower = current_user
       if @book.save
-        render json: {status: 'ok', borrowed_books: @current_user.borrowed_books}, status: :ok
+        render json: {status: 'ok', related_books: @current_user.related_books}, status: :ok
         return
       end
     end
     @borrowed_users = @info.borrowed_users
-    render json: {status: 'fail', errno: 'borrowed', users: @borrowed_users}, status: :ok
+    unless @borrowed_users.empty?
+      render json: {status: 'fail', errno: 'borrowed', users: @borrowed_users}, status: :ok
+      return
+    end
+    render json: {status: 'fail', errno: 'no_copy'}, status: :ok
   end
 
   def ret
     @book = Book.find(params['book']['id'])
     @book.user = nil
     @book.save
-    render json: {status: 'ok', borrowed_books: @current_user.borrowed_books}, status: :ok
+    render json: {status: 'ok', related_books: @current_user.related_books}, status: :ok
+  end
+
+  def favor
+    @isbn = params['isbn']
+    @favored = !params['favored']
+    @info = BookInfo.find_by(isbn: @isbn)
+    if @info.nil?
+      metadata = Fux::BookSniffer.sniff(@isbn)
+      @info = BookInfo.new(metadata)
+      @info.save!
+    end
+    if @favored
+      @info.users << @current_user
+    else
+      @info.users.delete @current_user
+    end
+
+    @book_list = @current_user.related_books
+    render json: {status: 'ok', isbn: @isbn, favored: @favored, book_list: @book_list}
   end
 
   private
@@ -115,8 +149,14 @@ class BooksController < ApplicationController
       }
     end
 
+    def book_info_params
+      params.require(:book).require(:book_info_attributes).permit(:isbn, :name, :cover, :author, :source).tap{ |bi|
+        bi["isbn"].gsub!(/[- ]/, '')
+      }
+    end
+
     def pisbn
-      book_params["book_info_attributes"]["isbn"]
+      book_info_params["isbn"]
     end
 
 end

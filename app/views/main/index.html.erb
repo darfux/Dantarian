@@ -1,16 +1,17 @@
-<div id="header" ng-class="{inputing: input.focus, correct: borrow_form.isbn.$valid, error: !input_is_correct(), returning: ret_book}">
+<!-- aio means All In One -->
+<div id="header" ng-class="{inputing: input.focus, correct: aio_form.input.$valid, error: !input_is_correct(), returning: ret_book}">
 	<div id="user-info">
 		<div id="nickname"><%= @current_user.nickname %></div>
 		<div id="account"><%= @current_user.account %></div>
 	</div>
-</div>
 
+</div>
 <div id="content">
 	<div id="borrow-bar">
-		<form ng-submit="handle_borrow($event)" name="borrow_form" novalidate>
+		<form name="aio_form" novalidate>
 			<div id="borrow_input">
-				<%= text_field_tag :isbn, nil, {id: 'isbn-input', "ng-model": "book.isbn", "is-isbn": '', required: '', maxlength: 17, "ng-class": "{inputing: input.focus, correct: borrow_form.isbn.$valid, error: !input_is_correct()}", autocomplete: "off", placeholder: "借书请输入ISBN号", "ng-focus": "input.focus=true;", "ng-blur": "input.focus=false"}%>
-				<span id="clear-btn" ng-show="input_has_value()" ng-click="handle_clear()">x</span>
+				<%= text_field_tag :input, nil, {id: 'aio-input', "ng-model": "aio.input", 'all-in-one': '', required: '',spellcheck: false, "placeholder": "{{aio_tip}}", "ng-class": "{inputing: input.focus, correct: input_is_correct(false), error: !input_is_correct()}", autocomplete: "off", "ng-focus": "input.focus=true;", "ng-blur": "input.focus=false", "ng-paste": "handle_paste()"}%>
+				<span id="clear-btn" ng-show="aio_form.input.$viewValue" ng-click="handle_clear()">x</span>
 			</div>
 			<div id="search-popup" ng-show="input_is_correct(false)">
 				<div ng-show="book.searching" class="loading">Loading...</div>
@@ -22,21 +23,34 @@
 					<p>{{book.name}}</p>
 					<p>{{book.author}}</p>
 					<span id="response-msg" ng-class="{ok: 'success', fail: 'error'}[book.borrow_state]">{{response_msg}}</span>
-					<button ng-show="borrow_btn" type="submit" class="button">借阅</button>
-					<button ng-show="ok_btn" class="button" ng-click="ok_btn=false;handle_clear()">知道了</button>
+					<div id="operation-button-group">
+						<div id="borrow-btn" class="btn" ng-show="btn.borrow"><button ng-click="handle_borrow($event)" >借阅</button></div>				
+						<div id="ok-btn" class="btn" ng-show="btn.known"><button ng-click="ok_btn=false;handle_clear()">知道了</button></div>
+						<div id="fav-icon" ng-show="btn.wish" ng-class="{favored: book.favored}"><ng-md-icon icon="favorite" size="35"  ng-attr-title="{{{true: '取消红心', false:'红心'}[!!book.favored]}}"   ng-click="handle_favor(book)"></ng-md-icon></div>
+					</div>
+
 				</div>
 				</div>
 			</div>
 		</form>
 	</div>
 
-	<div id="borrowed-list"ng-init="borrowed_books=<%= @current_user.borrowed_books.to_json %>">
-	<div ng-repeat="book in borrowed_books" class="list-cell" ng-class="{fade: ret_book==book.id}">
-		<img ng-src="{{book.cover}}">
-		<span class="name">{{book.name}}</span>
-		<span class="author" title="{{book.author}}">{{author_brief(book)}}</span>
-		<span class="isbn">{{book.isbn}}</span>
-		<span class="retbook_btn" title="还书请按住我"><button ng-mousedown="handle_ret($event, book.id)" ng-mouseup="handle_cancel_ret()"></button></span>
+	<div id="borrowed-list"ng-init="related_books=<%= @current_user.related_books.to_json %>">
+	<div ng-repeat="book in related_books" class="list-cell" ng-class="{fade: ret_book==book.borrowed_id&&!book.favored}">
+		<span class="cover-group" ng-class="{favored: book.favored}">
+			<div class="favor"  ng-class="{favored: book.favored}">
+				<ng-md-icon icon="favorite" size="35" ng-attr-title="{true: '取消红心', false:'红心'}[!!book.favored]"  ng-click="handle_favor(book)"></ng-md-icon>
+			</div>
+			<div class="favor-bg" ng-class="{favored: book.favored}"></div>
+			<div class="cover">
+				<img ng-src="{{book.cover}}"/>
+			</div>
+			<div class="name  cell-elm">{{book.name}}</div>
+		</span>
+
+		<span class="author cell-elm" title="{{book.author}}">{{author_brief(book)}}</span>
+		<span class="isbn cell-elm">{{book.isbn}}</span>
+		<span class="retbook_btn cell-elm" title="还书请按住我" ng-class="{borrowed: book.borrowed_id>0, fade: ret_book==book.borrowed_id&&book.favored}"><button ng-mousedown="handle_ret($event, book.borrowed_id)" ng-mouseup="handle_cancel_ret()"></button></span>
 	</div>
 	</div>
 </div>
