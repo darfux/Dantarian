@@ -136,18 +136,24 @@ class BooksController < ApplicationController
     @isbn = params['isbn']
     @favored = !params['favored']
     @info = BookInfo.find_by(isbn: @isbn)
+
     if @info.nil?
       metadata = Fux::BookSniffer.sniff(@isbn)
       @info = BookInfo.new(metadata)
       @info.save!
+      need_new_list = true
     end
+
+    borrowed = !@current_user.books.where(book_info: @info).empty?
     if @favored
       @info.users << @current_user
     else
-      @info.users.delete @current_user
+      @info.users.delete @current_user 
+    end
+    unless borrowed
+      @book_list = @current_user.related_books
     end
 
-    @book_list = @current_user.related_books
     render json: {status: 'ok', isbn: @isbn, favored: @favored, book_list: @book_list}
   end
 
