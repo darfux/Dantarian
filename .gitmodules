@@ -1,0 +1,3 @@
+[submodule "sae-wechat-scanner"]
+	path = sae-wechat-scanner
+	url = https://git.sinacloud.com/dantarian/
