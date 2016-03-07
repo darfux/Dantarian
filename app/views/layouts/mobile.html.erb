@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv=Content-Type content="text/html;charset=utf-8">
+  <title>Dantarian</title>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+  <% unless Rails.env.production? %>
+  <% else %>
+  <% end %>
+  <%= yield :css_tag%>
+  <%= yield :javascript_tag%>
+  <%= csrf_meta_tags %>
+</head>
+<body id="<%= params[:controller].gsub('/','-') %>" action="<%= params[:action] %>">
+
+<%= yield %>
+
+</body>
+</html>

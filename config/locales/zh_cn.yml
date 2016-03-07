@@ -58,7 +58,16 @@ zh_cn:
         account: 账号
         password: 密码
 
-  #HELPERS
+  #ACTIVERECORD
+  activerecord:
+    attributes:
+      book_info:
+        name: 书名
+        author: 作者
+        isbn: ISBN
+        cover: 封面
+
+  #HELPER
   helpers:
     label: 
       user_session:
@@ -67,3 +76,5 @@ zh_cn:
     submit:
       user_session:
         create: 登录
+      book:
+        create: 录入该书

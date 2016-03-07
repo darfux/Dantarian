@@ -1,0 +1,58 @@
+<% content_for :css_tag do %>
+  <style type="text/css">
+    html{
+      font-size: 2em;
+    }
+
+    .tip.success{
+    	width: 6rem;
+    	height: 6rem;
+    	border-radius: 4rem;
+    	background-color: #33AA88;
+    	text-align: center;
+    	line-height: 6rem;
+    	color: white;
+    	font-weight: 900;
+    	font-size: 4rem;
+    	margin: 20% auto;
+    }
+    .link{
+    	color: black;
+    	text-decoration: none;
+    	text-align: center;
+    }
+    .link div{
+    	width: 6rem;
+    	height: 2.5rem;
+    	line-height: 2.5rem;
+    	color: white;
+    	background-color: #6699AA;
+    	margin: 0 auto;
+    	border-radius: 1rem;
+    }
+  </style>
+<% end %>
+
+
+<% if @save_success %>
+
+<div class="tip success">✓</div>
+<%= link_to scanner_url, {:class => 'link'} do %>
+<div>继续录入</div>
+<% end %>
+<% else %>
+
+<div>录入失败！</div>
+<% if @book.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(@book.errors.count, "error") %> prohibited this book from being saved:</h2>
+
+  <ul>
+  <% @book.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+  <% end %>
+  </ul>
+</div>
+<% end %>
+
+<% end %>

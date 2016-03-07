@@ -1,6 +1,7 @@
 class BooksController < ApplicationController
   before_action :set_book, only: [:show, :edit, :update, :destroy]
   before_action :set_info, only: [:borrow_by_isbn]
+  skip_before_action :authenticate_user!, only:[:new_by_isbn, :create_by_scan]
 
   # GET /books
   # GET /books.json
@@ -16,6 +17,17 @@ class BooksController < ApplicationController
   # GET /books/new
   def new
     @book = Book.new
+  end
+
+  def new_by_isbn
+    @isbn = params[:isbn]
+    @metadata = Fux::BookSniffer.sniff(@isbn)
+    @book = Book.new({book_info_attributes: @metadata})
+    if @book.book_info.cover.empty?
+      @book.book_info.cover = '/images/404book.gif'
+    end
+    @book_info = BookInfo.find_by(isbn: @isbn)
+    render layout: 'mobile'
   end
 
   # GET /books/1/edit
@@ -36,6 +48,13 @@ class BooksController < ApplicationController
         format.json { render json: @book.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def create_by_scan
+    @book = Book.new(book_params)
+
+    @save_success = @book.save
+    render layout: 'mobile'
   end
 
   # PATCH/PUT /books/1

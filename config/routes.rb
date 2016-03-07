@@ -1,10 +1,14 @@
 Rails.application.routes.draw do
 
+  get 'scanner/book_record'
+
   resources :book_infos
   resources :books do
     collection do
       get 'sniffer'
       get 'jd_get_isbn'
+      get 'new_by_isbn/:isbn' => 'books#new_by_isbn'
+      post 'create_by_scan'
       post 'borrow_by_isbn'
       post 'ret'
       post 'favor'

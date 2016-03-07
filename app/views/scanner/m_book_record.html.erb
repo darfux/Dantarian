@@ -1,0 +1,25 @@
+<% content_for :javascript_tag do %>
+  <script type="text/javascript">
+  	function go_scan(){
+      window.location.replace("<%= scanner_url %>")
+  	}
+  </script>
+<% end %>
+
+<% content_for :javascript_tag do %>
+  <style type="text/css">
+    #go-scan{
+      height: 3em;
+      width: 3em;
+      background-color: green;
+      border-radius: 5em;
+      text-align: center;
+      line-height: 3em;
+      color: #EEE;
+      font-size: 6em;
+      margin: 30% auto;
+    }
+  </style>
+<% end %>
+
+<div id="go-scan" onclick="go_scan()">录入</div>
