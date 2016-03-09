@@ -5,3 +5,5 @@ rails g scaffold book user:references book_info:references number:integer
 rails g scaffold book_info isbn:string name:string cover:string source:string
 
 rails g model UserFavorBook user:references book_info:references
+
+rails g model User::Token user:references value:string time:integer

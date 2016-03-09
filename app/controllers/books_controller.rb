@@ -91,7 +91,7 @@ class BooksController < ApplicationController
         result[:cover] = '/images/404book.gif'
       end
     else
-      result = {name: bi.name, cover: bi.cover, author: bi.author, src: bi.source}
+      result = {name: bi.name, cover: bi.cover, author: bi.author, source: bi.source}
       favored = !bi.users.find_by(id: current_user.id).nil?
     end
     result[:favored] = favored

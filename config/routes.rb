@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  get 'test' => 'test#index'
   get 'scanner/book_record'
 
   resources :book_infos
@@ -18,7 +19,12 @@ Rails.application.routes.draw do
   root 'main#index'
   get 'main/index'
 
-  resources :users
+  resources :users do
+    collection do
+      get 'access_token'
+    end
+  end
+
 
   get 'login', to: "user/session#new", as: 'login'
   

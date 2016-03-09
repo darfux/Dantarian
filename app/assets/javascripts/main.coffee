@@ -5,10 +5,21 @@
 @mainCtrl = angular.module('mainController', []);
 
 
+
+class Book
+	PERMITED_ATTRS = ['name', 'isbn', 'author','cover', 'source', 'favored']
+	constructor: (json_data)->
+		d = json_data
+		for attr in PERMITED_ATTRS
+			@[attr] = json_data[attr]
+
+
+
 # The main contoller logic
 @mainCtrl.controller("MainCtrl", ['$scope', '$interval', '$window', 'NetManager', 'Helper', 'nodeValidator'
 ($scope, $interval, $window, NetManager, Helper, nodeValidator)->
 
+	
 	$scope.$watch('book.jd_id', ->
 		jd_id = $scope.book.jd_id
 		if jd_id &&　$scope.aio_form.$valid
@@ -37,6 +48,9 @@
 				$scope.book.source = data.source
 				$scope.book.favored = data.favored
 				$scope.book.show = true
+				console.log data
+				b = new Book(data)
+				console.log b
 
 	)
 
@@ -52,6 +66,7 @@
 			allowempty = true if allowempty == undefined
 			ret = (allowempty && !$scope.aio_form.input.$viewValue) ||  $scope.aio_form.$valid
 			ret
+			true
 		
 		get_book_parm: ->
 			{book: {book_info_attributes: angular.copy($scope.book)}}
@@ -114,7 +129,6 @@
 			$scope.ret_timer = $interval(
 							->
 								NetManager.post('/books/ret', {book: {id: book_id}}).then (data)->
-									console.log data
 									$scope.ret_book = null
 									$scope.related_books = data.related_books
 							,

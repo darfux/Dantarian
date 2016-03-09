@@ -14,22 +14,27 @@
 				<span id="clear-btn" ng-show="aio_form.input.$viewValue" ng-click="handle_clear()">x</span>
 			</div>
 			<div id="search-popup" ng-show="input_is_correct(false)">
-				<div ng-show="book.searching" class="loading">Loading...</div>
-				<div ng-show="book.show" id="book-show">
-				<div id="book-cover">
-					<%= image_tag("", {"ng-src": "{{book.cover}}"}) %>
-				</div>
-				<div id="book-info">
-					<p>{{book.name}}</p>
-					<p>{{book.author}}</p>
-					<span id="response-msg" ng-class="{ok: 'success', fail: 'error'}[book.borrow_state]">{{response_msg}}</span>
-					<div id="operation-button-group">
-						<div id="borrow-btn" class="btn" ng-show="btn.borrow"><button ng-click="handle_borrow($event)" >借阅</button></div>				
-						<div id="ok-btn" class="btn" ng-show="btn.known"><button ng-click="ok_btn=false;handle_clear()">知道了</button></div>
-						<div id="fav-icon" ng-show="btn.wish" ng-class="{favored: book.favored}"><ng-md-icon icon="favorite" size="35"  ng-attr-title="{{{true: '取消红心', false:'红心'}[!!book.favored]}}"   ng-click="handle_favor(book)"></ng-md-icon></div>
+				<div id="popup-book">
+					<div ng-show="book.searching" class="loading">Loading...</div>
+					<div ng-show="book.show" id="book-show">
+					<div id="book-cover">
+						<%= image_tag("", {"ng-src": "{{book.cover}}"}) %>
 					</div>
+					<div id="book-info">
+						<p>{{book.name}}</p>
+						<p>{{book.author}}</p>
+						<span id="response-msg" ng-class="{ok: 'success', fail: 'error'}[book.borrow_state]">{{response_msg}}</span>
+						<div id="operation-button-group">
+							<div id="borrow-btn" class="btn" ng-show="btn.borrow"><button ng-click="handle_borrow($event)" >借阅</button></div>				
+							<div id="ok-btn" class="btn" ng-show="btn.known"><button ng-click="ok_btn=false;handle_clear()">知道了</button></div>
+							<div id="fav-icon" ng-show="btn.wish" ng-class="{favored: book.favored}"><ng-md-icon icon="favorite" size="35"  ng-attr-title="{{{true: '取消红心', false:'红心'}[!!book.favored]}}"   ng-click="handle_favor(book)"></ng-md-icon></div>
+						</div>
 
+					</div>
+					</div>
 				</div>
+				<div id="popup-qrcode">
+					<qrcode size="200" data="123"></qrcode>
 				</div>
 			</div>
 		</form>

@@ -43,6 +43,7 @@ GEM
     browser (2.0.1)
     builder (3.2.2)
     byebug (8.2.1)
+    chunky_png (1.3.5)
     coffee-rails (4.1.1)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.1.x)
@@ -110,6 +111,8 @@ GEM
     rake (10.5.0)
     rdoc (4.2.1)
       json (~> 1.4)
+    rqrcode (0.10.1)
+      chunky_png (~> 1.0)
     sass (3.4.21)
     sass-rails (5.0.4)
       railties (>= 4.0.0, < 5.0)
@@ -162,6 +165,7 @@ DEPENDENCIES
   jquery-rails
   quiet_assets
   rails (= 4.2.5)
+  rqrcode
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   spring

@@ -230,6 +230,20 @@ $correct-color: #44AA88;
 		}
 	}
 
+	#popup-qrcode{
+		text-align: center;
+		padding: 10px 0px;
+	}
+
+
+
+
+
+
+
+
+
+
 	@mixin fade-out() {
 		transition: opacity ease-in 1s;
 		opacity: 0;

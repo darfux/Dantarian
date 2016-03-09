@@ -62,6 +62,12 @@ class UsersController < ApplicationController
     end
   end
 
+  def access_token
+    @token = User::Token.generate(current_user)
+    @token.save!
+    render text: @token.to_s
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
