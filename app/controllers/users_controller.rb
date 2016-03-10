@@ -63,7 +63,15 @@ class UsersController < ApplicationController
   end
 
   def access_token
-    @token = User::Token.generate(current_user)
+    target_path = (
+      case params[:want_to]
+      when 'record'
+        book_record_path
+      else
+        nil
+      end
+    )
+    @token = User::Token.generate(current_user, target_path)
     @token.save!
     render text: @token.to_s
   end

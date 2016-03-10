@@ -14,8 +14,8 @@
 				<span id="clear-btn" ng-show="aio_form.input.$viewValue" ng-click="handle_clear()">x</span>
 			</div>
 			<div id="search-popup" ng-show="input_is_correct(false)">
-				<div id="popup-book">
-					<div ng-show="book.searching" class="loading">Loading...</div>
+				<div id="popup-book" ng-show="book.searching">
+					<div class="loading">Loading...</div>
 					<div ng-show="book.show" id="book-show">
 					<div id="book-cover">
 						<%= image_tag("", {"ng-src": "{{book.cover}}"}) %>
@@ -34,7 +34,7 @@
 					</div>
 				</div>
 				<div id="popup-qrcode">
-					<qrcode size="200" data="123"></qrcode>
+					<qrcode size="200" data="{{qrcode}}"></qrcode>
 				</div>
 			</div>
 		</form>

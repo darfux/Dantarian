@@ -1,5 +1,5 @@
 class ScannerController < ApplicationController
-  skip_before_action :authenticate_user!
+  # skip_before_action :authenticate_user!
   def book_record
     if browser.device.mobile?   || 
       browser.platform.android? || 

@@ -171,6 +171,7 @@ class BooksController < ApplicationController
     def book_params
       params.require(:book).permit(book_info_attributes: [:isbn, :name, :cover, :author, :source]).tap{ |book|
         book["book_info_attributes"]["isbn"].gsub!(/[- ]/, '')
+        book["recorder_id"] = current_user.id
       }
     end
 

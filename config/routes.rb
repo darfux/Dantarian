@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   get 'test' => 'test#index'
-  get 'scanner/book_record'
+  get 'scanner/book_record', as: 'book_record'
 
   resources :book_infos
   resources :books do
@@ -25,8 +25,8 @@ Rails.application.routes.draw do
     end
   end
 
-
   get 'login', to: "user/session#new", as: 'login'
+  get 's/:token', to: "user/session#create_by_token", as: 'token_login'
   
   namespace :user do
     post 'sessions', to: 'session#create', as: :sessions

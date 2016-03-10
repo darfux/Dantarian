@@ -1,5 +1,5 @@
 class User::SessionController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:new, :create]
+  skip_before_action :authenticate_user!, only: [:new, :create, :create_by_token]
   def new
     @session = User::Session.new
   end
@@ -18,5 +18,15 @@ class User::SessionController < ApplicationController
   def destroy
     session[:user_id] = nil
     redirect_to root_path
+  end
+
+  def create_by_token
+    token = User::Token.parse(params[:token])
+    if token
+      session[:user_id] = token.user_id
+      redirect_to token.target_path || root_path
+    else
+      render 'invalid_token', layout: 'mobile'
+    end
   end
 end

@@ -54,12 +54,15 @@ class Book
 
 	)
 
+	user_login_url = (token)->
+		$window.location.origin+"/s/#{token}"
 
 	scattrs = {
 		aio: {input: ''}
 		book: {isbn: '', jd_id: null}
 		ok: {}
 		btn: {}
+		qrcode: ""
 
 		
 		input_is_correct: (allowempty)->
@@ -139,9 +142,16 @@ class Book
 			$interval.cancel($scope.ret_timer)
 
 
+		handle_record_request: ->
+			NetManager.get('/users/access_token', {want_to: 'record'}).then (token)->
+				$scope.qrcode = user_login_url(token)
+				console.log $scope.qrcode
+
+
 	}
-	$scope.ok = {}
 	angular.extend($scope, scattrs)
+
+	$scope.handle_record_request();
 
 	# AIO_TIPS = [
 	# 	"输入ISBN借阅书籍",

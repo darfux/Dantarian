@@ -1,6 +1,7 @@
 class Book < ActiveRecord::Base
   belongs_to :book_info
   belongs_to :user
+  belongs_to :recorder, class_name: :User, foreign_key: :recorder_id
   validates :book_info, presence: true
   accepts_nested_attributes_for :book_info
 
