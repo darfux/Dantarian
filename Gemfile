@@ -1,4 +1,4 @@
-source 'https://ruby.taobao.org'
+source 'https://rubygems.org/'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -29,7 +29,9 @@ gem 'bcrypt', '~> 3.1.7'
 # Use Unicorn as the app server
 # gem 'unicorn'
 
-gem 'thin'
+# gem 'thin'
+
+gem "puma"
 
 gem 'database_cleaner'
 
@@ -39,6 +41,8 @@ gem 'database_cleaner'
 gem 'browser'
 
 gem 'rqrcode'
+
+gem 'tubesock'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
