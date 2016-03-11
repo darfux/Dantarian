@@ -153,6 +153,15 @@ class Book
 
 	$scope.handle_record_request();
 
+
+
+	ws = new WebSocket('ws://' + window.location.host + '/main/chat');
+	ws.onopen    = ()->  
+		console.log ('websocket opened')
+	ws.onclose   = ()->
+		console.log ('websocket closed')
+	ws.onmessage = (m)->
+		console.log ('websocket message: ' +  m.data)
 	# AIO_TIPS = [
 	# 	"输入ISBN借阅书籍",
 	# 	"输入京东链接加入愿望单",

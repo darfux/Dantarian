@@ -28,5 +28,6 @@ module Dantarian
 
     # This cache store uses the file system to store entries. 
     config.cache_store = :file_store, "/tmp/dantarian"
+
   end
 end
