@@ -16,7 +16,9 @@
 			<div id="search-popup" ng-show="input_is_correct(false)">
 				<div id="popup-book" ng-show="book.searching">
 					<div class="loading">Loading...</div>
-					<div ng-show="book.show" id="book-show">
+				</div>
+
+				<div ng-show="book.show" id="book-show">
 					<div id="book-cover">
 						<%= image_tag("", {"ng-src": "{{book.cover}}"}) %>
 					</div>
@@ -29,11 +31,10 @@
 							<div id="ok-btn" class="btn" ng-show="btn.known"><button ng-click="ok_btn=false;handle_clear()">知道了</button></div>
 							<div id="fav-icon" ng-show="btn.wish" ng-class="{favored: book.favored}"><ng-md-icon icon="favorite" size="35"  ng-attr-title="{{{true: '取消红心', false:'红心'}[!!book.favored]}}"   ng-click="handle_favor(book)"></ng-md-icon></div>
 						</div>
-
-					</div>
 					</div>
 				</div>
-				<div id="popup-qrcode">
+				
+				<div id="popup-qrcode" ng-show="qrcode!=null">
 					<qrcode size="200" data="{{qrcode}}"></qrcode>
 				</div>
 			</div>

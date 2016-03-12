@@ -21,6 +21,7 @@ class Book
 
 	
 	$scope.$watch('book.jd_id', ->
+		console.log 'jd'
 		jd_id = $scope.book.jd_id
 		if jd_id &&　$scope.aio_form.$valid
 			$scope.book.isbn = null
@@ -48,9 +49,6 @@ class Book
 				$scope.book.source = data.source
 				$scope.book.favored = data.favored
 				$scope.book.show = true
-				console.log data
-				b = new Book(data)
-				console.log b
 
 	)
 
@@ -62,14 +60,14 @@ class Book
 		book: {isbn: '', jd_id: null}
 		ok: {}
 		btn: {}
-		qrcode: ""
+		qrcode: null
 
 		
 		input_is_correct: (allowempty)->
 			allowempty = true if allowempty == undefined
 			ret = (allowempty && !$scope.aio_form.input.$viewValue) ||  $scope.aio_form.$valid
 			ret
-			true
+			# true
 		
 		get_book_parm: ->
 			{book: {book_info_attributes: angular.copy($scope.book)}}
@@ -88,6 +86,7 @@ class Book
 			$scope.aio_form.input.$viewValue = ""
 			$scope.response_msg = ""
 			$scope.btn = {}
+			$scope.qrcode = null
 
 		handle_favor: (book)->
 			return if $scope.book.favoring
@@ -151,7 +150,7 @@ class Book
 	}
 	angular.extend($scope, scattrs)
 
-	$scope.handle_record_request();
+	
 
 
 
@@ -188,6 +187,7 @@ class Book
 				controller.$render()
 
 			controller.$validators.allInOne = (modelValue, viewValue)->
+				scope.qrcode = null
 				if (controller.$isEmpty(modelValue))
 					return true
 				isbn_ok = validator.isISBN(modelValue)
@@ -206,6 +206,11 @@ class Book
 				if jd_ok
 					scope.ok.jd = true
 					scope.book.jd_id = jd_ok[1]
+					return true
+
+				if viewValue=="录入" || viewValue=="record"
+					scope.handle_record_request()
+					scope.book = {isbn: '', jd_id: null}
 					return true
 
 				false
