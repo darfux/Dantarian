@@ -23,7 +23,7 @@ Book = (function() {
 
 this.mainCtrl.controller("MainCtrl", [
   '$scope', '$interval', '$window', 'NetManager', 'Helper', 'nodeValidator', function($scope, $interval, $window, NetManager, Helper, nodeValidator) {
-    var scattrs, user_login_url, ws;
+    var scattrs, user_login_url;
     $scope.$watch('book.jd_id', function() {
       var jd_id;
       console.log('jd');
@@ -183,23 +183,29 @@ this.mainCtrl.controller("MainCtrl", [
         return NetManager.get('/users/access_token', {
           want_to: 'record'
         }).then(function(token) {
+          var ws;
           $scope.qrcode = user_login_url(token);
           $scope.aio.show = 'qrcode';
-          return console.log($scope.qrcode);
+          console.log($scope.qrcode);
+          $scope.ws = ws = new WebSocket('ws://' + window.location.host + ("/main/chat?token=" + token));
+          ws.onopen = function() {
+            return console.log('websocket opened');
+          };
+          ws.onclose = function() {
+            return console.log('websocket closed');
+          };
+          return ws.onmessage = function(m) {
+            console.log('websocket message: ' + m.data);
+            $scope.handle_clear();
+            $scope.$apply();
+            console.log($scope.aio);
+            return ws.close();
+          };
         });
       }
     };
     angular.extend($scope, scattrs);
-    ws = new WebSocket('ws://' + window.location.host + '/main/chat');
-    ws.onopen = function() {
-      return console.log('websocket opened');
-    };
-    ws.onclose = function() {
-      return console.log('websocket closed');
-    };
-    return ws.onmessage = function(m) {
-      return console.log('websocket message: ' + m.data);
-    };
+    return $scope.aio.input = 'record';
   }
 ]).directive('allInOne', [
   'nodeValidator', function(validator) {

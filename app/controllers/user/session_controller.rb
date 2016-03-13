@@ -24,6 +24,7 @@ class User::SessionController < ApplicationController
     token = User::Token.parse(params[:token])
     if token
       session[:user_id] = token.user_id
+      Rails.cache.write({token: token.to_s}, true)
       redirect_to token.target_path || root_path
     else
       render 'invalid_token', layout: 'mobile'

@@ -139,13 +139,23 @@ class Book
 			$scope.ret_book = null
 			$interval.cancel($scope.ret_timer)
 
-
 		handle_record_request: ->
 			$scope.aio.show = 'loading'
 			NetManager.get('/users/access_token', {want_to: 'record'}).then (token)->
 				$scope.qrcode = user_login_url(token)
 				$scope.aio.show = 'qrcode'
 				console.log $scope.qrcode
+				$scope.ws = ws = new WebSocket('ws://' + window.location.host + "/main/chat?token=#{token}");
+				ws.onopen    = ()->  
+					console.log ('websocket opened')
+				ws.onclose   = ()->
+					console.log ('websocket closed')
+				ws.onmessage = (m)->
+					console.log ('websocket message: ' +  m.data)
+					$scope.handle_clear()
+					$scope.$apply()
+					console.log $scope.aio
+					ws.close()
 
 
 	}
@@ -156,13 +166,6 @@ class Book
 
 
 
-	ws = new WebSocket('ws://' + window.location.host + '/main/chat');
-	ws.onopen    = ()->  
-		console.log ('websocket opened')
-	ws.onclose   = ()->
-		console.log ('websocket closed')
-	ws.onmessage = (m)->
-		console.log ('websocket message: ' +  m.data)
 	# AIO_TIPS = [
 	# 	"输入ISBN借阅书籍",
 	# 	"输入京东链接加入愿望单",
