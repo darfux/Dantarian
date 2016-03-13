@@ -25,7 +25,7 @@ class Book
 		jd_id = $scope.book.jd_id
 		if jd_id &&　$scope.aio_form.$valid
 			$scope.book.isbn = null
-			$scope.book.searching = true
+			$scope.aio.show = 'loading'
 			NetManager.get('/books/jd_get_isbn', {item_id: jd_id}).to($scope.book, 'isbn')
 
 	)
@@ -33,16 +33,16 @@ class Book
 	$scope.$watch('book.isbn', ->
 		$scope.error_msg = ""
 		isbn = $scope.book.isbn
-		$scope.book.show = false
+		$scope.aio.show = null
 		$scope.btn = {}
 		if isbn && $scope.aio_form.$valid
-			$scope.book.searching = true
+			$scope.aio.show = 'loading'
 			NetManager.get('/books/sniffer', {isbn: isbn}).then (data)->
 				if data.source != 'none'
 					unless $scope.ok.jd
 						$scope.btn.borrow = true 
 					$scope.btn.wish = true
-				$scope.book.searching = false
+				$scope.aio.show = 'book'
 				$scope.book.cover = data.cover
 				$scope.book.name = data.name
 				$scope.book.author = data.author
@@ -142,8 +142,10 @@ class Book
 
 
 		handle_record_request: ->
+			$scope.aio.show = 'loading'
 			NetManager.get('/users/access_token', {want_to: 'record'}).then (token)->
 				$scope.qrcode = user_login_url(token)
+				$scope.aio.show = 'qrcode'
 				console.log $scope.qrcode
 
 
@@ -187,7 +189,6 @@ class Book
 				controller.$render()
 
 			controller.$validators.allInOne = (modelValue, viewValue)->
-				scope.qrcode = null
 				if (controller.$isEmpty(modelValue))
 					return true
 				isbn_ok = validator.isISBN(modelValue)
@@ -201,6 +202,7 @@ class Book
 					scope.book.jd_id = item_id
 					value = 'JD-' + item_id
 					updateView(value)
+					return true
 
 				jd_ok = viewValue.match(/JD\-(\d+)/)
 				if jd_ok
@@ -210,9 +212,10 @@ class Book
 
 				if viewValue=="录入" || viewValue=="record"
 					scope.handle_record_request()
-					scope.book = {isbn: '', jd_id: null}
 					return true
 
+				scope.qrcode = null
+				scope.book = {isbn: '', jd_id: null}
 				false
 	};
 ])

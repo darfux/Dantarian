@@ -13,12 +13,12 @@
 				<%= text_field_tag :input, nil, {id: 'aio-input', "ng-model": "aio.input", 'all-in-one': '', required: '',spellcheck: false, "placeholder": "{{aio_tip}}", "ng-class": "{inputing: input.focus, correct: input_is_correct(false), error: !input_is_correct()}", autocomplete: "off", "ng-focus": "input.focus=true;", "ng-blur": "input.focus=false", "ng-paste": "handle_paste()"}%>
 				<span id="clear-btn" ng-show="aio_form.input.$viewValue" ng-click="handle_clear()">x</span>
 			</div>
-			<div id="search-popup" ng-show="input_is_correct(false)">
-				<div id="popup-book" ng-show="book.searching">
+			<div id="search-popup" ng-show="input_is_correct(false)" ng-switch="aio.show">
+				<div id="popup-book"  ng-switch-when="loading">
 					<div class="loading">Loading...</div>
 				</div>
 
-				<div ng-show="book.show" id="book-show">
+				<div id="book-show" ng-switch-when="book">
 					<div id="book-cover">
 						<%= image_tag("", {"ng-src": "{{book.cover}}"}) %>
 					</div>
@@ -34,7 +34,7 @@
 					</div>
 				</div>
 				
-				<div id="popup-qrcode" ng-show="qrcode!=null">
+				<div id="popup-qrcode"  ng-switch-when="qrcode">
 					<qrcode size="200" data="{{qrcode}}"></qrcode>
 				</div>
 			</div>
