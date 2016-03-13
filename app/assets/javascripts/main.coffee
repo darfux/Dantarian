@@ -19,7 +19,6 @@ class Book
 @mainCtrl.controller("MainCtrl", ['$scope', '$interval', '$window', 'NetManager', 'Helper', 'nodeValidator'
 ($scope, $interval, $window, NetManager, Helper, nodeValidator)->
 
-	
 	$scope.$watch('book.jd_id', ->
 		console.log 'jd'
 		jd_id = $scope.book.jd_id
@@ -153,6 +152,7 @@ class Book
 	angular.extend($scope, scattrs)
 
 	
+	$scope.aio.input = 'record'
 
 
 

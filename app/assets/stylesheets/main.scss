@@ -231,6 +231,20 @@ $correct-color: #44AA88;
 	}
 
 	#popup-qrcode{
+		&:hover{
+			img{
+				opacity: 1.0;
+				transition: opacity linear 0.33s;
+			}
+		}
+		img{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			margin-left: -25px;
+			margin-top: -25px;
+			opacity: 0.6;
+		}
 		text-align: center;
 		padding: 10px 0px;
 	}

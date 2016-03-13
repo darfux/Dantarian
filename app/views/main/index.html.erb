@@ -34,7 +34,8 @@
 					</div>
 				</div>
 				
-				<div id="popup-qrcode"  ng-switch-when="qrcode">
+				<div id="popup-qrcode" title="使用微信扫一扫" ng-switch-when="qrcode">
+					<img src="/images/wechat-logo.png">
 					<qrcode size="200" data="{{qrcode}}"></qrcode>
 				</div>
 			</div>
