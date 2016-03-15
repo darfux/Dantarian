@@ -151,11 +151,18 @@ class Book
 				ws.onclose   = ()->
 					console.log ('websocket closed')
 				ws.onmessage = (m)->
+					msg = m.data
+					switch msg
+						when 'fail'
+							null
+						when 'success'
+							window.location.href = "books"
 					console.log ('websocket message: ' +  m.data)
+						
 					$scope.handle_clear()
 					$scope.$apply()
-					console.log $scope.aio
 					ws.close()
+					$scope.ws = null
 
 
 	}

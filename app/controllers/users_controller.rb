@@ -76,6 +76,41 @@ class UsersController < ApplicationController
     render text: @token.to_s
   end
 
+  def record_books
+    
+  end
+
+  def record_books_socket
+    hijack do |tubesock|
+
+      tubesock.onopen do |data|
+      end
+      
+      tubesock.onclose do |data|
+        # byebug
+      end
+
+      Thread.new do
+        time_begin = Time.now.to_i
+        logged = nil
+        loop do
+          break if logged = Rails.cache.read({token: token})
+          sleep 0.5
+          now = Time.now.to_i
+          break if now - time_begin > User::Token::EXPIRE_DURATION
+        end
+        unless logged
+          tubesock.send_data "fail"
+        else
+          tubesock.send_data "success"
+        end
+        Rails.cache.delete_entry({token: token})
+        tubesock.close
+      end
+
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user

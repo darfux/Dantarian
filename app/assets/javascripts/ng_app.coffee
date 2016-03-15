@@ -9,6 +9,7 @@
 		'sessionController',
 		'testController',
 		'mainController',
+		'usersController',
 		'booksController',
 	]
 ).config(["$httpProvider", '$resourceProvider', (provider, resource)->
