@@ -21,9 +21,8 @@ Rails.application.routes.draw do
   get 'main/chat'
 
   resources :users do
-    member do
-      get 'record_books'
-    end
+    get 'record_books'
+    get 'record_books/socket' => 'users#record_books_socket'
     collection do
       get 'access_token'
     end

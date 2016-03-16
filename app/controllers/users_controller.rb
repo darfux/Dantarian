@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  include Tubesock::Hijack
+
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :record_books, :record_books_socket]
   skip_before_action :authenticate_user!, only: [:new, :create]
 
   # GET /users
@@ -80,10 +82,12 @@ class UsersController < ApplicationController
     
   end
 
+  # https://archive.dennisreimann.de/blog/silencing-the-rails-log-on-a-per-action-basis/
   def record_books_socket
     hijack do |tubesock|
 
       tubesock.onopen do |data|
+        tubesock.send_data 'hi'
       end
       
       tubesock.onclose do |data|
@@ -91,20 +95,21 @@ class UsersController < ApplicationController
       end
 
       Thread.new do
-        time_begin = Time.now.to_i
-        logged = nil
+        counter = 0
+        key = {record_mark: @user.id}
+        record_mark = Rails.cache.read(key) || 0
         loop do
-          break if logged = Rails.cache.read({token: token})
+          record_mark_now = Rails.cache.read(key)
+          if record_mark!=record_mark_now
+            tubesock.send_data "update"
+            record_mark = record_mark_now
+            counter = 0
+          end
+          counter += 1
+          break if counter > 20
           sleep 0.5
-          now = Time.now.to_i
-          break if now - time_begin > User::Token::EXPIRE_DURATION
         end
-        unless logged
-          tubesock.send_data "fail"
-        else
-          tubesock.send_data "success"
-        end
-        Rails.cache.delete_entry({token: token})
+        tubesock.send_data "timeout"
         tubesock.close
       end
 
@@ -114,7 +119,8 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      uid = params[:id] || params[:user_id]
+      @user = User.find(uid)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

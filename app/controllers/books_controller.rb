@@ -54,6 +54,11 @@ class BooksController < ApplicationController
     @book = Book.new(book_params)
 
     @save_success = @book.save
+
+    key = {record_mark: @current_user.id}
+    record_mark = Rails.cache.read(key) || 0
+    Rails.cache.write(key, record_mark+1)
+
     render layout: 'mobile'
   end
 
