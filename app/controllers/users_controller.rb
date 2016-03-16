@@ -79,7 +79,11 @@ class UsersController < ApplicationController
   end
 
   def record_books
-    
+    respond_to do |format|
+      format.html { render }
+      format.json { render json: 
+        {recent_record_books: @user.recent_record_books, total_record_num: @user.record_books.size} }
+    end
   end
 
   # https://archive.dennisreimann.de/blog/silencing-the-rails-log-on-a-per-action-basis/
@@ -87,11 +91,10 @@ class UsersController < ApplicationController
     hijack do |tubesock|
 
       tubesock.onopen do |data|
-        tubesock.send_data 'hi'
+        tubesock.send_data({msg: 'hi'}.to_json)
       end
       
       tubesock.onclose do |data|
-        # byebug
       end
 
       Thread.new do
@@ -99,17 +102,17 @@ class UsersController < ApplicationController
         key = {record_mark: @user.id}
         record_mark = Rails.cache.read(key) || 0
         loop do
-          record_mark_now = Rails.cache.read(key)
+          record_mark_now = Rails.cache.read(key) || 0
           if record_mark!=record_mark_now
-            tubesock.send_data "update"
+            tubesock.send_data({msg: "update"}.to_json)
             record_mark = record_mark_now
             counter = 0
           end
           counter += 1
-          break if counter > 20
+          break if counter > 1200
           sleep 0.5
         end
-        tubesock.send_data "timeout"
+        tubesock.send_data({msg: "timeout", redirect_to: root_path}.to_json)
         tubesock.close
       end
 

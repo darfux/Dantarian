@@ -1,4 +1,10 @@
 class Book < ActiveRecord::Base
+  scope :with_info, ->{ 
+    book_info_column = ['isbn', 'name', 'cover', 'author'].
+      map{  |attr| "book_infos."+attr.to_s }.join(', ')
+    joins(:book_info).select("books.*, #{book_info_column}") 
+  }
+
   belongs_to :book_info
   belongs_to :user
   belongs_to :recorder, class_name: :User, foreign_key: :recorder_id

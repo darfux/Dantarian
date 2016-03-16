@@ -1,3 +1,12 @@
-<% @current_user.record_books.each do |book| %>
-	<%= book.info.name %><br>
-<% end %>
+<div id="record-counter" ng-init="record_num=<%= @user.record_books.size %>">{{record_num}}</div>
+<div id="recorded-list"ng-init="record_books=<%= @user.recent_record_books.to_json %>">
+<div ng-repeat="book in record_books" class="list-cell">
+	<img ng-src="{{book.cover}}">
+	<span class="name  cell-elm">{{book.name}}</span>
+	<span class="isbn cell-elm">{{book.isbn}}</span>
+	<span class="datetime cell-elm">
+		<span class="date">{{book.created_at | date:'yy/MM/dd' }}</span>
+		<span class="time">{{book.created_at | date:'HH:mm' }}</span>
+	</span>
+</div>
+</div>

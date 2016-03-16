@@ -29,4 +29,8 @@ class User < ActiveRecord::Base
   	}
   	connection.execute(sql)
   end
+
+  def recent_record_books(top = 10)
+    record_books.with_info.order('created_at desc').limit(top)
+  end
 end

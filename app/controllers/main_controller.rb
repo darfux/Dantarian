@@ -20,9 +20,9 @@ class MainController < ApplicationController
           break if now - time_begin > User::Token::EXPIRE_DURATION
         end
         unless logged
-          tubesock.send_data "fail"
+          tubesock.send_data({msg: "fail"}.to_json)
         else
-          tubesock.send_data "success"
+          tubesock.send_data({msg: "success", redirect_to: user_record_books_path(@current_user)}.to_json)
         end
         Rails.cache.delete_entry({token: token})
         tubesock.close

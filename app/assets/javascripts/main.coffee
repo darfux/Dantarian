@@ -151,12 +151,15 @@ class Book
 				ws.onclose   = ()->
 					console.log ('websocket closed')
 				ws.onmessage = (m)->
-					msg = m.data
+					data = JSON.parse(m.data)
+					msg = data.msg
+					console.log data
 					switch msg
 						when 'fail'
 							null
 						when 'success'
-							window.location.href = "books"
+							console.log m.data.redirect_to
+							window.location.pathname = data.redirect_to
 					console.log ('websocket message: ' +  m.data)
 						
 					$scope.handle_clear()
@@ -169,7 +172,6 @@ class Book
 	angular.extend($scope, scattrs)
 
 	
-	$scope.aio.input = 'record'
 
 
 

@@ -1,3 +1,113 @@
 // Place all the styles related to the users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+$current-module: "users";
+
+##{$current-module}-record_books{
+
+#record-counter{
+	width: 192px;
+	height: 72px;
+	margin: 0px auto;
+	font-size: 32px;
+	line-height: 72px;
+	border-radius: 40%;
+	text-align: center;
+	border-bottom: solid 10px darken(#66CCFF, 6.6%);
+	color: #666;
+}
+
+#recorded-list{
+	display: block;
+	width: 720px;
+	position: relative;
+	margin: 80px auto;
+	text-align: center;
+	@keyframes fadein {
+	    from { opacity: 0; }
+	    to   { opacity: 1; }
+	}
+	div .cell-elm{
+		text-align: left;
+		margin-top: 20px;
+		margin-left: 32px;
+	}
+	div:first-child{
+		position: relative;
+		margin-left: -40px;
+		width: 800px;
+		font-size: 26px;
+		margin-bottom: 36px;
+		animation: fadein 2s;
+		.name{
+			width: 400px;
+		}
+		.datetime{
+			display: block;
+			position: absolute;
+			right: 20px;
+			bottom: 20px;
+			font-size: 0.8em;
+		}
+
+	}
+	.list-cell:not(:first-child){
+		margin-top: 12px;
+		height: 64px;
+		border-bottom: solid 1px #EEE;
+		position: relative;
+		font-size: 16px; 
+		img{
+			height: 50px;
+			width: auto;
+			vertical-align: bottom;
+		}
+
+		.name{
+			width: 350px;
+			font-weight: 700;
+			font-size: 1.1em;
+		}
+		.author{
+			display: none;
+		}
+		.isbn{		
+			width: 100px;
+			font-size: 0.9em;
+		}
+		.datetime{
+			width: 60px;
+			font-size: 1.1em;
+		}
+	}
+	.isbn{
+		color: gray;
+	}	
+	.datetime{
+		color: #ABC;
+		.time{
+			display: none;
+		}
+		&:hover{
+			cursor: default;
+			.time{
+				display: inline-block;
+			}
+			.date{
+				display: none;
+			}
+		}
+	}
+	.name, .isbn, .datetime{
+		vertical-align: top;
+		display: inline-block;
+	}
+
+}
+
+
+
+//END
+}

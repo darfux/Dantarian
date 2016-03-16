@@ -12,26 +12,34 @@ using = (injects)->
 
 controllers = {}
 controllers.record_books = ->
-	eval(using('$scope'))
+	eval(using('$scope, NetManager, Helper'))
 
-	update_list = ->
-		console.log 123
-	
 	location = window.location
+	update_list = ->
+		NetManager.get(location.pathname+".json").then (data)->
+			$scope.record_books = data.recent_record_books
+			$scope.record_num = data.total_record_num
+	
+
+	# NTBI
+	$scope.author_brief = (book)->
+		Helper.brief(book.author, 12)
+	
 	$scope.ws = ws = new WebSocket("ws://#{location.host}#{location.pathname}/socket");
 	ws.onopen    = ()->  
 		console.log ('websocket opened')
 	ws.onclose   = ()->
 		console.log ('websocket closed')
 	ws.onmessage = (m)->
-		msg = m.data
-		console.log msg
+		data = JSON.parse(m.data)
+		console.log data
+		msg = data.msg
 		switch msg
 			when 'update'
 				update_list()
 			when 'timeout'
 				ws.close()
-				$scope.ws = null
+				window.location.pathname = data.redirect_to
 			
 		
 	
@@ -42,12 +50,11 @@ controllers.record_books = ->
 
 
 
-dependencies = ['$scope', '$interval', '$window', 'NetManager']
+dependencies = ['$scope', '$interval', '$window', 'NetManager', 'Helper']
 # The main contoller logic
 @usersCtrl.controller("UsersCtrl", dependencies.concat(
 	($scope, $interval, $window, NetManager)->
 		for i in [0..dependencies.length]
-			console.log dependencies[i]
 			this[dependencies[i]] = arguments[i]
 		action = $('body').attr('action')
 		controllers[action].call(this, arguments);	
