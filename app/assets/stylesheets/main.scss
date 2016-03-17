@@ -230,7 +230,15 @@ $correct-color: #44AA88;
 		}
 	}
 
+	@-webkit-keyframes qrcode-fadeout {
+	  0%   { opacity: 1; }
+	  100% { opacity: 0; }
+	}
+
 	#popup-qrcode{
+		animation-name: qrcode-fadeout;
+		animation-timing-function: cubic-bezier(1,.13,1,.52);
+		animation-fill-mode: forwards;
 		&:hover{
 			img{
 				opacity: 1.0;

@@ -1,4 +1,7 @@
-<div id="record-counter" ng-init="record_num=<%= @user.record_books.size %>">{{record_num}}</div>
+<div id="record-counter" ng-init="record_num=<%= @user.record_books.size %>" ng-style="{'border-color': counter_bottom_color() }">
+	<span id="counter">{{record_num}}</span>
+	<span id="back-home" ng-click="back()" title="返回主页"><ng-md-icon icon="home" size="64"  ng-style="{'fill': counter_bottom_color() }"></span>
+</div>
 <div id="recorded-list"ng-init="record_books=<%= @user.recent_record_books.to_json %>">
 <div ng-repeat="book in record_books" class="list-cell">
 	<img ng-src="{{book.cover}}">

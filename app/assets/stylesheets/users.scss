@@ -17,13 +17,40 @@ $current-module: "users";
 	text-align: center;
 	border-bottom: solid 10px darken(#66CCFF, 6.6%);
 	color: #666;
+	position: relative;
+	#back-home{
+		position: absolute;
+		left: 50%;
+		margin-left: -32px;
+		opacity: 0;
+		&:hover{
+			svg{
+				cursor: pointer;
+			}
+			opacity: 1;
+		}
+		a:hover{
+			text-decoration: none;
+			background-color: none;
+		}
+	}
+	&:hover{
+		#counter{
+			display: none;
+		}
+		#back-home{
+			transition: opacity 0.25s ease-in-out 0s;
+			opacity: 1;
+			display: inline-block;
+		}
+	}
 }
 
 #recorded-list{
 	display: block;
 	width: 720px;
 	position: relative;
-	margin: 80px auto;
+	margin: 60px auto;
 	text-align: center;
 	@keyframes fadein {
 	    from { opacity: 0; }
@@ -53,12 +80,20 @@ $current-module: "users";
 		}
 
 	}
+	@for $i from 2 through 10{
+		div:nth-child(#{$i}){
+			opacity: 0.9-$i*$i/120;
+		}
+	}
 	.list-cell:not(:first-child){
 		margin-top: 12px;
 		height: 64px;
 		border-bottom: solid 1px #EEE;
 		position: relative;
 		font-size: 16px; 
+
+		counter-increment:section;
+		content: counter(section);
 		img{
 			height: 50px;
 			width: auto;

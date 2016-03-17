@@ -12,13 +12,22 @@ using = (injects)->
 
 controllers = {}
 controllers.record_books = ->
-	eval(using('$scope, NetManager, Helper'))
+	eval(using('$scope, $window, NetManager, Helper'))
 
-	location = window.location
+	location = $window.location
 	update_list = ->
 		NetManager.get(location.pathname+".json").then (data)->
 			$scope.record_books = data.recent_record_books
 			$scope.record_num = data.total_record_num
+
+	$scope.counter_bottom_color = ->
+		book = $scope.record_books[0]
+		return null if !book
+		color = Helper.isbn2color(book.isbn)
+		color
+
+	$scope.back = =>
+		location.pathname = '/'
 	
 
 	# NTBI
@@ -39,7 +48,7 @@ controllers.record_books = ->
 				update_list()
 			when 'timeout'
 				ws.close()
-				window.location.pathname = data.redirect_to
+				location.pathname = data.redirect_to
 			
 		
 	
@@ -53,7 +62,7 @@ controllers.record_books = ->
 dependencies = ['$scope', '$interval', '$window', 'NetManager', 'Helper']
 # The main contoller logic
 @usersCtrl.controller("UsersCtrl", dependencies.concat(
-	($scope, $interval, $window, NetManager)->
+	($scope, $interval, $window, NetManager, Helper)->
 		for i in [0..dependencies.length]
 			this[dependencies[i]] = arguments[i]
 		action = $('body').attr('action')

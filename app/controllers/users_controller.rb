@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   include Tubesock::Hijack
+  RECORD_QR_TIMEOUT = 5
 
   before_action :set_user, only: [:show, :edit, :update, :destroy, :record_books, :record_books_socket]
   skip_before_action :authenticate_user!, only: [:new, :create]
@@ -98,6 +99,7 @@ class UsersController < ApplicationController
       end
 
       Thread.new do
+        interval = 0.5
         counter = 0
         key = {record_mark: @user.id}
         record_mark = Rails.cache.read(key) || 0
@@ -109,8 +111,8 @@ class UsersController < ApplicationController
             counter = 0
           end
           counter += 1
-          break if counter > 1200
-          sleep 0.5
+          break if counter > UsersController::RECORD_QR_TIMEOUT/interval
+          sleep interval
         end
         tubesock.send_data({msg: "timeout", redirect_to: root_path}.to_json)
         tubesock.close
