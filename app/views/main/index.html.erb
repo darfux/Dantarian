@@ -34,7 +34,7 @@
 					</div>
 				</div>
 				
-				<div id="popup-qrcode" title="使用微信扫一扫" ng-switch-when="qrcode" style="animation-duration: <%= UsersController::RECORD_QR_TIMEOUT %>s">
+				<div id="popup-qrcode" title="使用微信扫一扫" ng-switch-when="qrcode" style="animation-duration: <%= User::Token::EXPIRE_DURATION+1 %>s">
 					<img src="/images/wechat-logo.png">
 					<qrcode size="200" data="{{qrcode}}"></qrcode>
 				</div>
