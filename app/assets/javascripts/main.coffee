@@ -86,6 +86,9 @@ class Book
 			$scope.response_msg = ""
 			$scope.btn = {}
 			$scope.qrcode = null
+			if $scope.ws
+				$scope.ws.close()
+				$scope.ws = null
 
 		handle_favor: (book)->
 			return if $scope.book.favoring
