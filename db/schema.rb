@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -30,21 +29,19 @@ ActiveRecord::Schema.define(version: 20160310143154) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.integer  "recorder_id"
+    t.index ["book_info_id"], name: "index_books_on_book_info_id"
+    t.index ["recorder_id"], name: "index_books_on_recorder_id"
+    t.index ["user_id"], name: "index_books_on_user_id"
   end
-
-  add_index "books", ["book_info_id"], name: "index_books_on_book_info_id"
-  add_index "books", ["recorder_id"], name: "index_books_on_recorder_id"
-  add_index "books", ["user_id"], name: "index_books_on_user_id"
 
   create_table "user_favor_books", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "book_info_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.index ["book_info_id"], name: "index_user_favor_books_on_book_info_id"
+    t.index ["user_id"], name: "index_user_favor_books_on_user_id"
   end
-
-  add_index "user_favor_books", ["book_info_id"], name: "index_user_favor_books_on_book_info_id"
-  add_index "user_favor_books", ["user_id"], name: "index_user_favor_books_on_user_id"
 
   create_table "user_tokens", force: :cascade do |t|
     t.integer  "user_id"
@@ -53,9 +50,8 @@ ActiveRecord::Schema.define(version: 20160310143154) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.string   "target_path"
+    t.index ["user_id"], name: "index_user_tokens_on_user_id"
   end
-
-  add_index "user_tokens", ["user_id"], name: "index_user_tokens_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "account",         null: false
@@ -64,8 +60,7 @@ ActiveRecord::Schema.define(version: 20160310143154) do
     t.string   "password_digest"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.index ["account"], name: "index_users_on_account"
   end
-
-  add_index "users", ["account"], name: "index_users_on_account"
 
 end

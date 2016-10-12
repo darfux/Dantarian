@@ -3,17 +3,6 @@
 <head>
   <meta http-equiv=Content-Type content="text/html;charset=utf-8">
   <title>Dantarian</title>
-  <% unless Rails.env.production? %>
-    <script src="/bower_components/angular/angular.js"></script>
-    <script src="/bower_components/angular-material-icons/angular-material-icons.min.js"></script> 
-  <% else %>
-    <script src="//cdn.bootcss.com/angular.js/1.4.8/angular.min.js"></script>
-    <script src="//cdn.bootcss.com/angular-material-icons/0.6.0/angular-material-icons.min.js"></script>
-  <% end %>
-  <script src="/bower_components/angular-resource/angular-resource<%= use_min! %>.js"></script>
-  <script type="text/javascript" src="/bower_components/angular.validators/angular.validators<%= use_min! %>.js"></script>
-  <script src="/bower_components/qrcode-generator/js/qrcode.js"></script>
-  <script src="/bower_components/angular-qrcode/angular-qrcode.js"></script>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>

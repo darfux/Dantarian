@@ -5,7 +5,6 @@
 		'ngMdIcons',
 		'ngResource',
 		'monospaced.qrcode',
-		'angular.validators',
 		'sessionController',
 		'testController',
 		'mainController',

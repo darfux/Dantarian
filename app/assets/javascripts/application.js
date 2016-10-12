@@ -13,6 +13,18 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+
+//= require angular
+//= require angular-resource
+//= require angular-animate
+//= require angular-aria
+//= require angular-material
+//= require angular-material-icons
+//= require qrcode-generator
+//= require angular-qrcode
+//= require validator-js
+
+
 //= require ng_app
 //= require_tree ./lib/.
 //= require_tree .

@@ -16,8 +16,8 @@ class Book
 
 
 # The main contoller logic
-@mainCtrl.controller("MainCtrl", ['$scope', '$interval', '$window', 'NetManager', 'Helper', 'nodeValidator'
-($scope, $interval, $window, NetManager, Helper, nodeValidator)->
+@mainCtrl.controller("MainCtrl", ['$scope', '$interval', '$window', 'NetManager', 'Helper',
+($scope, $interval, $window, NetManager, Helper)->
 
 	$scope.$watch('book.jd_id', ->
 		console.log 'jd'
@@ -192,7 +192,7 @@ class Book
 	# 	3000
 	# )
 ])
-.directive('allInOne', ['nodeValidator', (validator)->
+.directive('allInOne', [()->
 	return {
 		require: 'ngModel',
 		restrict: 'A',
