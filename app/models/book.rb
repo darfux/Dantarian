@@ -6,7 +6,7 @@ class Book < ActiveRecord::Base
   }
 
   belongs_to :book_info
-  belongs_to :user
+  belongs_to :user, optional: true
   belongs_to :recorder, class_name: :User, foreign_key: :recorder_id
   validates :book_info, presence: true
   accepts_nested_attributes_for :book_info
@@ -16,6 +16,7 @@ class Book < ActiveRecord::Base
   after_initialize :set_default_info
   before_validation :check_info
   before_save :set_number
+  before_save :trim_isbn
 
 
   def check_info
@@ -31,6 +32,10 @@ class Book < ActiveRecord::Base
 
   def set_number
     self.number = self.book_info.books.size+1
+  end
+
+  def trim_isbn
+    self.book_info.isbn.gsub!(/[- ]/, '') unless self.persisted?
   end
 
 end

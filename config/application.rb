@@ -27,7 +27,7 @@ module Dantarian
     config.active_record.raise_in_transactional_callbacks = true
 
     # This cache store uses the file system to store entries. 
-    config.cache_store = :file_store, "/tmp/dantarian"
+    config.cache_store = :file_store, Rails.root.join("tmp/cache_store")
 
   end
 end

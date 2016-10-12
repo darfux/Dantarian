@@ -55,7 +55,7 @@ class BooksController < ApplicationController
 
     @save_success = @book.save
 
-    key = {record_mark: @current_user.id}
+    key = {record_mark: current_user.id}
     record_mark = Rails.cache.read(key) || 0
     Rails.cache.write(key, record_mark+1)
 
@@ -175,15 +175,12 @@ class BooksController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def book_params
       params.require(:book).permit(book_info_attributes: [:isbn, :name, :cover, :author, :source]).tap{ |book|
-        book["book_info_attributes"]["isbn"].gsub!(/[- ]/, '')
-        book["recorder_id"] = @current_user.id
+        book["recorder_id"] = current_user.id
       }
     end
 
     def book_info_params
-      params.require(:book).require(:book_info_attributes).permit(:isbn, :name, :cover, :author, :source).tap{ |bi|
-        bi["isbn"].gsub!(/[- ]/, '')
-      }
+      param = params.require(:book).require(:book_info_attributes).permit(:isbn, :name, :cover, :author, :source)
     end
 
     def pisbn
