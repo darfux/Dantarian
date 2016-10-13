@@ -61,6 +61,8 @@ gem 'rqrcode'
 
 gem 'tubesock'
 
+gem 'config'
+
 bower_packages = [
   "angular",
   "angular-resource",

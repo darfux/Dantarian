@@ -37,7 +37,7 @@
 <% if @save_success %>
 
 <div class="tip success">✓</div>
-<%= link_to scanner_url, {:class => 'link'} do %>
+<%= link_to @scanner_url, {:class => 'link'} do %>
 <div>继续录入</div>
 <% end %>
 <% else %>

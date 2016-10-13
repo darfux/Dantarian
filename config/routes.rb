@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   get 'test' => 'test#index'
-  get 'scanner/book_record', as: 'book_record'
+  get 'scanner/book_record' => 'books#record', as: 'book_record'
 
   resources :book_infos
   resources :books do

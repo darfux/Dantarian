@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :authenticate_user!
   before_action :current_user
+
   protected
     def authenticate_user!
       unless User.find_by_id(session[:user_id])
@@ -13,5 +14,9 @@ class ApplicationController < ActionController::Base
 
     def current_user
       @current_user ||= session[:user_id] && User.find(session[:user_id])
+    end
+
+    def current_server
+      @current_host ||= ("#{request.host}#{request.port==80 ? '' : ':'+request.port.to_s}" || Settings.server)
     end
 end

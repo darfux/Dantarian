@@ -1,6 +1,7 @@
 class BooksController < ApplicationController
   before_action :set_book, only: [:show, :edit, :update, :destroy]
   before_action :set_info, only: [:borrow_by_isbn]
+  before_action :set_scanner, only: [:new_by_isbn, :create_by_scan, :record]
   skip_before_action :authenticate_user!, only:[:new_by_isbn, :create_by_scan]
 
   # GET /books
@@ -162,6 +163,16 @@ class BooksController < ApplicationController
     render json: {status: 'ok', isbn: @isbn, favored: @favored, book_list: @book_list}
   end
 
+  def record
+    if browser.device.mobile?   || 
+      browser.platform.android? || 
+      browser.platform.ios?
+      render 'm_book_record', layout: 'mobile'
+    else
+      render 'book_record'
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_book
@@ -171,6 +182,11 @@ class BooksController < ApplicationController
     def set_info
       @info = BookInfo.find_by(isbn: pisbn)
     end
+
+    def set_scanner
+      @scanner_url = "//#{Settings.scanner_host}?target=#{current_server}/books/new_by_isbn/"
+    end
+
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def book_params
