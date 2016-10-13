@@ -1,1 +1,4 @@
-server: l100.darfux.cc:3000
+server_host: l100.darfux.cc
+server_port: 3000
+sso_host: localhost
+sso_port: 3001
