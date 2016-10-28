@@ -2,7 +2,16 @@
 	"folders":
 	[
 		{
+			"folder_exclude_patterns":
+			[
+				"tmp"
+			],
 			"path": "/home/darfux/Project/Dantarian"
 		}
-	]
+	],
+	"settings":
+	{
+		"tab_size": 2,
+		"translate_tabs_to_spaces": true
+	}
 }

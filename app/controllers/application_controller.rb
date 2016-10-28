@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
 
   protected
     def authenticate_user!
+      
       return if current_user
       unless validate_sso_login
         redirect_to login_url
@@ -55,6 +56,6 @@ class ApplicationController < ActionController::Base
     end
 
     def sso_user_info
-      JSON.parse(Base64.decode64(params["uinfo"])).merge({sso_id: params["uid"]})
+      JSON.parse(Base64.decode64(params["uinfo"])).merge({sso_id: params["uid"]}).tap{ |info| info.delete('email') }
     end
 end
