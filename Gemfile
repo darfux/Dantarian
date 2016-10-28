@@ -78,3 +78,4 @@ source 'https://rails-assets.org' do
   end
 end
 
+gem 'socksify'

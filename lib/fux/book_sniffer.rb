@@ -1,3 +1,4 @@
+require 'socksify/http'
 module Fux
   class BookSniffer < Sniffer
     FAILED_LIMIT = 4;
@@ -12,6 +13,7 @@ module Fux
       begin
         result = sniff_from_douban(isbn)
       rescue => e
+        puts e
       end
 
       result
@@ -25,8 +27,9 @@ module Fux
         book = Rails.cache.read({isbn: isbn})
       end
       unless book
-        uri = URI('https://api.douban.com/v2/book/isbn/')
-        res = Net::HTTP.get_response(uri+isbn)
+        uri = URI("https://api.douban.com/v2/book/isbn/")
+        # res = Net::HTTP.get_response(uri+isbn)
+        res = Net::HTTP.SOCKSProxy('127.0.0.1', 1080).get_response(uri+isbn)
         book = JSON.parse(res.body)
         if defined? Rails
           Rails.cache.write({isbn: isbn}, book)
